@@ -1,0 +1,75 @@
+
+@mixin allCenter{position: absolute; left: 50%; top: 50%; -webkit-transform: translateX(-50%) translateY(-50%); transform: translateX(-50%) translateY(-50%);}
+@mixin center{position: absolute; left: 50%; -webkit-transform: translateX(-50%); transform: translateX(-50%);}
+@mixin middle{position: absolute; top: 50%; -webkit-transform: translateY(-50%); transform: translateY(-50%);}
+$grey555:rgb(225,225,226);
+$grey000:rgb(109,109,109);
+$grey333:rgb(136,136,136);
+$black111:rgb(17,17,17);
+
+@mixin blockDemo($wid, $hei){width:$wid; height:$hei;}
+
+.No-error{
+  @include allCenter;
+  @include blockDemo(4.20rem, auto);
+  img{
+    display: block;;
+    @include blockDemo(2.00rem, auto)
+    margin:0 auto 0.20rem;
+  }
+  p{
+    text-align: center;
+    font-size: 0.28rem;
+    line-height: 0.36rem;
+    color: $grey333;
+  }
+}
+
+a{
+  box-sizing: border-box;
+}
+
+.bill-list{
+  list-style: none;
+  overflow: hidden;
+  padding-left: 0.32rem;
+  background: #fff;
+  li{
+    border-bottom: 1px solid $grey555;
+    height: 1.06rem;
+    line-height: 1.06rem;
+    padding-right: 0.32rem;
+    h1{
+      font-weight: normal;
+      font-size: 0.30rem;
+      color: $black111;
+      float: left;
+    }
+    p{
+      float:right;
+      font-size: 0.28rem;
+      position: relative;
+      .price{
+        color: #f66;
+        margin-right: 0.40rem;
+      }
+      .status{
+        color:$grey000;
+      }
+      img{
+        display: inline-block;
+        height: .26rem;
+        right: 0;
+        @include middle;
+      }
+    }
+
+  }
+}
+
+
+
+/* 默认样式改变*/
+.my-list .am-list-item{ height: 1.07rem; }
+.my-list .am-list-item .am-list-line .am-list-extra{ font-size: .3rem; -ms-flex-preferred-size: none;flex-basis: none; -webkit-box-flex: 1; -ms-flex: 1; flex: 1; color: $black111;}
+.my-list .am-list-item .am-list-line .am-list-content{ font-size: .3rem; -webkit-box-flex: 0;-ms-flex: none;flex: none; color: $black111;}

@@ -1,0 +1,107 @@
+@import 'lib';
+@import 'antd';
+
+$displayArray: block inline inline-block;
+
+@each $d in $displayArray {
+  .#{ $d } {
+    display: $d
+  }
+}
+
+@for $i from 1 through 100 {
+  .wp#{ $i } {
+    @include w(#{ $i + '%' })
+  }
+}
+
+$positionArray: fixed absolute relative;
+
+@each $p in $positionArray {
+  .pos-#{ $p } {
+    position: $p
+  }
+}
+
+.fright {
+  float: right
+}
+.fleft {
+  float: left
+}
+.blod {
+  font-weight: 700;
+}
+.brand-color {
+  @include color($brand)
+}
+
+.gray-1 {
+  @include color($gray-1)
+}
+.gray-2 {
+  @include color($gray-2)
+}
+.gray-3 {
+  @include color($gray-3)
+}
+.gray-4 {
+  @include color($gray-4)
+}
+.gray-5 {
+  @include color($gray-5)
+}
+
+@each $key, $val in (xx:.36, x: .30, m: .28, s: .26, ss: .20) {
+  .font-#{ $key } {
+    @include rem(#{ $val });
+  }
+}
+.tmr {
+  @include margin(24px, right)
+}
+.white {
+  @include color($white)
+}
+.tcenter {
+  text-align: center;
+}
+
+.btn {
+  @extend %pos-relative;
+  @extend .tcenter;
+  @extend .font-x;
+  @extend .blod;
+  @include color($white);
+  @include radius(10px);
+  @include lh(76px);
+  &.primary {
+    @include bgc($brand);
+    border: 0;
+  }
+  &.disabled {
+    @include bgc($gray-3);
+    border: 0;
+  }
+}
+.tag {
+  @extend .pos-relative;
+  @extend .font-ss;
+  @include padding(4px 12px);
+  @include radius(10px);
+  border : 1px solid;
+  &.orange {
+    @extend .blod;
+    @include bgc($brand);
+    @include color($white);
+    @include padding(4px 16px);
+    border: 0;
+
+  }
+}
+.pd16 {
+  padding: 32px;
+}
+body {
+  font-family: -apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,Helvetica,Arial,PingFang SC,Hiragino Sans GB,Source Han Sans,Noto Sans CJK Sc,Microsoft YaHei,sans-serif
+}

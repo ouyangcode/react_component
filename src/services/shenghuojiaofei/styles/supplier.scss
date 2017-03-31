@@ -1,0 +1,44 @@
+@mixin allCenter{position: absolute; left: 50%; top: 50%; transform: translateX(-50%) translateY(-50%);}
+@mixin center{position: absolute; left: 50%; transform: translateX(-50%);}
+@mixin middle{position: absolute; top: 50%; transform: translateY(-50%);}
+@mixin blockDemo($wid, $hei){width:$wid; height:$hei;}
+// 自定义标签样式
+html{margin:0;}
+.supplier{
+  margin: 0;
+  width: 100%;    //每加一个数据源，宽度加1.93
+  height: .90rem;
+  position: relative;
+  p{
+    @include blockDemo(0.44rem,0.44rem);
+    @include middle;
+    margin:0;
+    left: 0.24rem;
+    z-index: 11;
+    background: url(../img/mycenter.png) center center no-repeat;
+    background-size: cover;
+  }
+  div{
+    @include allCenter;
+    h1{
+      width: 1.93rem;
+      height: .64rem;
+      border-radius: .64rem;
+      font-size: .28rem;
+      line-height: .64rem;
+      font-weight: normal;
+      float: left;
+      color: rgb(136,136,136);
+      overflow: hidden;
+      &.active{
+        color: rgb(16,71,137);
+        background-color: #fff;
+      }
+      img{
+        height: .34rem;
+        padding-top: .15rem;
+      }
+    }
+  }
+
+}
