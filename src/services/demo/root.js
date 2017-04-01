@@ -16,8 +16,8 @@ export default Root
 const Routes = () => (
   <Router history={ browserHistory } >
     <Route path='/demo' component={ require('react-router?name=app!./containers/app') } >
-      <Route path='page1' component={ require('react-router?name=test!./containers/page1') } />
-      <Route path='page2' component={ require('react-router?name=test!./containers/page2') } />
+      <Route path='page1' component={ require('react-router?name=page1!./containers/page1') } />
+      <Route path='page2' component={ require('react-router?name=page2!./containers/page2') } />
     </Route>
   </Router>
 )

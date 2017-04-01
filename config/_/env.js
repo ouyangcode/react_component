@@ -23,6 +23,7 @@ const dev = config => {
 }
 //生产环境config处理
 const prod = config => {
+  config.devtool = false
   config.plugins = config.plugins.concat([
     new webpack.DefinePlugin({
       'process.env': {
@@ -30,6 +31,9 @@ const prod = config => {
       }
     }),
     new webpack.optimize.UglifyJsPlugin({
+      output: {
+        comments: false,  // remove all comments
+      },
       compress: {
         warnings: false
       }
