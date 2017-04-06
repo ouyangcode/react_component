@@ -9,7 +9,7 @@ import Cashier from '../components/cashier'
 
 const mapStateToProps = ({ cashier }, { params }) => {
   let   customerPayment = []
-  let { payments } = getStore('customerConfig', 'session')
+  let { payments } = getStore('customerConfig', 'session') || {}
   if(payments) {
     customerPayment = payments.map(payment => payment.channelCode)
     // console.log(customerPayment)

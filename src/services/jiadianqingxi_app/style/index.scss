@@ -1,0 +1,40 @@
+@import 'self_common';
+
+#root{
+   width:$w;
+   height:$h;
+   .listMain{
+      width: $w;
+      height: $h;
+      .headerWrap{
+        width: $w;
+        height:88px;
+        background:#fff;
+        border-bottom:2px solid rgb(227,227,228);
+        .header_l{
+           width: 15%;
+           height:$h;
+           float:left;
+           @extend .none;
+        }
+        .header_c{
+           width: 70%;
+           height:$h;
+           float:left;
+           font-size:.4rem;
+           color:#666;
+           text-indent: 32px;
+           line-height: 88px;
+           .jiaoPic{
+             width: 30px;
+             height:auto;
+           }
+        }
+        .header_r{
+           width: 15%;
+           height:$h;
+           float:left;
+        }
+      }
+   }
+}

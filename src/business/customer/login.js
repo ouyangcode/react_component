@@ -5,6 +5,7 @@ const query = parseQuery(location.search)
 let loginSuccessCallback
 //登陆
 export const login = (callback) => {
+  console.log('customerCode', getStore('customerCode', 'session'))
   loginSuccessCallback = callback
   switch (getStore('customerCode', 'session')) {
     case 'chubao': chubaoLogin();  break
@@ -84,8 +85,8 @@ const chubaoLogin = () => {
 const sdkLogin = () => {
   const { otosaas } = window
   if(typeof otosaas !== 'undefined') {
-    otosaas.loginSuccess = (appKey, sign, customerUserId, customerUserPhone) => {
-      fetchUserInfo({ appKey, sign, customerUserId, customerUserPhone })
+    otosaas.loginSuccess = (appKey, sign, customerUserId, customerUserPhone, timestamp) => {
+      fetchUserInfo({ appKey, sign, customerUserId, customerUserPhone, timestamp })
     }
     otosaas.login()
   }

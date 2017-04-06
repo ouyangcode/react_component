@@ -1,0 +1,156 @@
+@mixin allCenter{position: absolute; left: 50%; top: 50%; transform: translateX(-50%) translateY(-50%);}
+@mixin center{position: absolute; left: 50%; transform: translateX(-50%);}
+@mixin middle{position: absolute; top: 50%; transform: translateY(-50%);}
+$grey000:rgb(109,109,109);
+$grey555:rgb(153,153,153);
+$grey111:rgb(219,219,219);
+$grey222:rgb(229,229,229);
+$grey777:rgb(170,170,170);
+$black111:rgb(17,17,17);
+$orange560:rgb(255,160,0);
+$orange570:rgb(255,171,0);
+$orange542:rgb(255,247,229);
+
+@mixin blockDemo($wid, $hei){width:$wid; height:$hei;}
+@mixin fontDemo($size, $color, $lineH){font-size: $size; color: $color; line-height: $lineH;}
+@mixin allZero{margin:0; padding: 0;}
+
+html{font-size: 13.31vw;}
+
+// 默认样式修改
+// 输入框样式修改
+.am-list-item.am-input-item:after { border-bottom: none; }
+.am-list-item.am-input-item { padding-right: 0;}     //使清除图标右移
+
+// 自定义样式
+body{
+  overflow-x: hidden;
+  background-color: #fff;
+  #root{
+    overflow: hidden;
+    .hf{
+      position: relative;
+      height: 12rem;
+      .header{
+        background-color: #fff;
+        border-bottom: 1px solid $grey222;
+        padding: .4rem .3rem .4rem;
+        .number{
+          .am-input-item{
+            padding-left: .1rem;
+            height: .56rem;
+            min-height: 0;
+            font-size: .56rem;
+            .am-input-control input{
+              font-size: .56rem;
+              color: $black111;
+            }
+          }
+        }
+        .notice{
+          color: $orange560;
+          padding-left: .1rem;
+          @include fontDemo (.24rem, $orange560, .24rem);
+        }
+        .area{
+          position: absolute;
+          right: .8rem;
+          top: .57rem;
+          @include fontDemo(.26rem, $grey555, .26rem);
+        }
+      }
+      .phone-history{
+        overflow: hidden;
+        position: absolute;
+        width: 100%;
+        top: 1.37rem;
+        left: 0;
+        background: #fff;
+        z-index:10;
+        padding-bottom: .88rem;
+        li{
+          background-color: #fff;
+          height: .88rem;
+          line-height: .88rem;
+          padding-left: .3rem;
+          font-size: .4rem;
+          color: $black111;
+          border-bottom: 1px solid $grey222;
+          &.clearHistory{
+            width: 100%;
+            color: rgb(255, 160, 0);
+            text-align: center;
+            font-size: .28rem;
+            position: absolute;
+            bottom: 0;
+            z-index: 20;
+            border-top: 1px solid $grey222;
+          }
+        }
+      }
+
+      .container{
+        margin: 0 .3rem;
+        .inline {
+          width: 2.1rem!important;
+          height: 1.4rem;
+          margin: 0.2rem 0 0.2rem;
+          display: flex;
+          display: -webkit-flex;
+          display: -moz-flex;
+          align-items: center;
+          justify-content: center;
+          flex-flow: column;
+          background: #fff;
+          border: 1px solid $grey777;
+          border-radius: .06rem;
+          margin-right: .27rem;
+          @for $i from 1 to 10{
+            &:nth-of-type(#{$i*3}){margin-right:0;}
+          }
+          h1{
+            @include fontDemo(0.34rem, $grey777, .4rem)
+            font-weight: normal;
+            margin-bottom: 0;
+          }
+          p{
+            @include fontDemo(.24rem, $grey777, .3rem)
+            margin-top: 0;
+          }
+          &.active{
+            background-color: $orange542;
+            border-color: $orange560;
+            h1, p{
+              color: $orange560;
+            }
+
+          }
+        }
+      }
+
+      .footer{
+        padding: 0 .3rem;
+        position: fixed;
+        border-top: 1px solid $grey222;
+        bottom: 0;
+        width: 100%;
+        .pay-price{
+          float: left;
+          @include fontDemo(.34rem, $orange560, 1.12rem);
+        }
+        .button{
+          float: right;
+          @include blockDemo(2.78rem, 1.12rem);
+          @include fontDemo(.34rem, #fff, 1.12rem);
+          margin-right:: .3rem;
+          text-align:center;
+          background-color: $grey111;
+          &.active{
+            background-color: $orange560;
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+}

@@ -3,8 +3,10 @@ import { getLocation       } from './geolocation'
 import { getCustomerConfig } from './config'
 import { compose } from '@boluome/common-lib'
 
-export const customerCode = location.host.replace(/(.test.otosaas.com|.otosaas.com)/, '')
 
+export const customerCode = location.host.replace(/(.test.otosaas.com|.otosaas.com)/, '')
+// let customerCode = 'blmsdk'
+// export { customerCode }
 //联合登陆
 export const unionLogin = callback => {
   getCustomerConfig(customerCode, () => {

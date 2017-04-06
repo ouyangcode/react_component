@@ -18,9 +18,10 @@ const fetchConfig = callback => {
       setStore('customerConfig', data, 'session')
       callback()
     } else {
-      //console.log(message)
       callback(message)
     }
+  }).catch(err => {
+    callback(err)
   })
 }
 const loadSdk = (customerCode, callback) => {

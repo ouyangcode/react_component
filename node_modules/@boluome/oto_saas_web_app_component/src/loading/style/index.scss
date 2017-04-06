@@ -1,0 +1,17 @@
+@import "../../../sass/lib";
+
+.loading-container {
+  @extend %pos-fixed;
+  @include radius(24px);
+  @include wh(128px, 128px);
+  @include box((top: 50%, left: 50%));
+  @include bgc(#444546);
+  @include margin(-128px 0 0 -64px);
+  @include z(99);
+  img {
+    @extend %pos-absolute;
+    @include wh(40px, 40px);
+    @include box((top: 50%, left: 50%));
+    @include margin(-20px, top left)
+  }
+}

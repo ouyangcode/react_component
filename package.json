@@ -7,12 +7,12 @@
     "new": "node ./creator/index",
     "demo": "webpack-dev-server --config ./config/demo/webpack.config.babel.js ",
     "demo_build": "NODE_ENV=production webpack --config ./config/demo/webpack.config.babel.js --progress --hide-modules",
-    "huafei": "webpack-dev-server --config /Users/jack/blm/oto_saas_web_app_rebuild/config/huafei/webpack.config.babel.js",
-    "huafei_build": "NODE_ENV=production webpack --config /Users/jack/blm/oto_saas_web_app_rebuild/config/huafei/webpack.config.babel.js --progress --hide-modules",
+    "huafei": "webpack-dev-server --config ./config/huafei/webpack.config.babel.js",
+    "huafei_build": "NODE_ENV=production webpack --config ./config/huafei/webpack.config.babel.js --progress --hide-modules",
     "shenghuojiaofei": "webpack-dev-server --config /Users/jack/blm/oto_saas_web_app_rebuild/config/shenghuojiaofei/webpack.config.babel.js",
     "shenghuojiaofei_build": "NODE_ENV=production webpack --config /Users/jack/blm/oto_saas_web_app_rebuild/config/shenghuojiaofei/webpack.config.babel.js --progress --hide-modules",
-    "cashier": "webpack-dev-server --config /Users/prd/Documents/_git/_work/boluome/oto_saas_web_app_rebuild/config/cashier/webpack.config.babel.js",
-    "cashier_build": "NODE_ENV=production webpack --config /Users/prd/Documents/_git/_work/boluome/oto_saas_web_app_rebuild/config/cashier/webpack.config.babel.js --progress --hide-modules"
+    "cashier": "webpack-dev-server --config ./config/cashier/webpack.config.babel.js",
+    "cashier_build": "NODE_ENV=production webpack --config ./config/cashier/webpack.config.babel.js --progress --hide-modules"
   },
   "repository": {
     "type": "git",
@@ -37,6 +37,7 @@
     "babel-preset-stage-0": "^6.22.0",
     "css-loader": "^0.26.1",
     "extract-text-webpack-plugin": "^1.0.1",
+    "fastclick": "^1.0.6",
     "file-loader": "^0.10.0",
     "html-webpack-plugin": "^2.28.0",
     "node-sass": "^4.5.0",
