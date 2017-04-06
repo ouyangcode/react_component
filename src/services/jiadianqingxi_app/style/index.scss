@@ -11,6 +11,7 @@
         height:88px;
         background:#fff;
         border-bottom:2px solid rgb(227,227,228);
+        @extend .pos-fixed;
         .header_l{
            width: 15%;
            height:$h;
@@ -28,12 +29,94 @@
            .jiaoPic{
              width: 30px;
              height:auto;
+             margin-left:16px;
            }
         }
         .header_r{
            width: 15%;
            height:$h;
            float:left;
+        }
+      }
+      .contentWrap{
+          @extend .pos-absolute;
+          top:90px;
+          bottom:0;
+          background:#fff;
+          padding:0 32px;
+          overflow: auto;
+          z-index: 2;
+          .listItem{
+             width: 100%;
+             height:280px;
+             padding:32px 0;
+             border-bottom:1px solid rgb(231,231,231);
+          }
+          .itemPic{
+             width: 35%;
+             height:auto;
+             float:left;
+             margin-right: 5%;
+             img{
+                width: $w;
+                height:auto;
+             }
+          }
+          .item{
+             width: 60%;
+             float:left;
+             .title{
+                width: $w;
+                height:auto;
+                @extend .inline-block;
+                margin-bottom:14px;
+                margin-top:20px;
+                font-size:0.33rem;
+                color:rgb(17,17,17);
+             }
+             .theme{
+               width: $w;
+               height:auto;
+               @extend .inline-block;
+               font-size:0.3rem;
+               color:rgb(153,153,153);
+               line-height:0.4rem;
+             }
+             .price{
+                 width: 40%;
+                 height:auto;
+                 @extend .inline-block;
+                 color:rgb(255,102,102);
+                 margin: 16px 10px 0 0;
+             }
+             .channel{
+               width: 40%;
+               height:auto;
+               @extend .inline-block;
+               color:rgb(153,153,153);
+               margin: 16px 10px 0 0;
+             }
+          }
+      }
+      .kongWrap{
+        width: $w;
+        height:$h;
+        background:#f5f5f6;
+        @extend .pos-fixed;
+        top:90px;
+        bottom:0;
+        z-index: 50;
+        img{
+           width: 360px;
+           height:360px;
+           @include s_allCenter(80%);
+        }
+        .tips{
+          width: 360px;
+          height:auto;
+          @include s_allCenter(-95%);
+          text-align: center;
+          color:rgb(136,136,136);
         }
       }
    }

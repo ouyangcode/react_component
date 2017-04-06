@@ -3,16 +3,20 @@ import { get, send, getStore, merge } from '@boluome/common-lib';
 import jiaoImg from '../img/jiao.png';
 
 //Project interface
-const listUrl = '/jiadianqingxi/v1/categories';
+const detailsUrl = '/jiadianqingxi/v1/category/:categoryId';
+let datas = {
+   channel : 'zmn',
+   cityId : ,
+   source : '2'
+}
 // test
-export const getListData = ( datas ) => dispatch => {
-  console.log('datas==='+datas)
-  get( listUrl , { city : datas , source : 2 }).then(reply => {
+export const getDetailsData = ( data ) => dispatch => {
+  get( detailsUrl , datas).then(reply => {
      const { code, data, message } = reply
      if( code === 0 ){
        dispatch({
-         type: 'KJIN_LISTSHOW',
-         listData: data
+         type: 'KJIN_DETAILSHOW',
+         detailsDate: data
        })
      }else{
         console.log('数据加载失败')
