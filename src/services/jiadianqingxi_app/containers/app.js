@@ -2,7 +2,7 @@
 import { connect } from 'react-redux'
 import { wrap } from '@boluome/oto_saas_web_app_component'
 import { get, send, getStore, merge } from '@boluome/common-lib';
-
+import { browserHistory } from 'react-router'
 // self
 import { getListData } from '../actions/app.js'
 
@@ -25,11 +25,10 @@ const mapDispatchToProps = dispatch => {    //添加方法
       getListData : res => {
         console.log('res',res);
         dispatch({ type:"CHANGE_SELECTED_CITY", selectedCIty:res.name })
-klmkmkmkmkmlml
-
+        dispatch(getListData(res.name))
       },
-      goDetails : ( cityId , Id) => {
-         browserHistory.push('/details')
+      goDetails : ( cityId , Id) => {console.log(cityId+'====cityId')
+         browserHistory.push('/jiadianqingxi_app/details?categoryId='+Id+'&cityId='+cityId)
       }
     }
 }

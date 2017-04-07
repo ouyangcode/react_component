@@ -2,6 +2,7 @@
 import { connect } from 'react-redux'
 import { wrap } from '@boluome/oto_saas_web_app_component'
 import { get, send, getStore, merge } from '@boluome/common-lib';
+import { browserHistory } from 'react-router'
 
 // self
 import { getDetailsData } from '../actions/details.js'
@@ -15,14 +16,16 @@ const mapStateToProps = ( state ) => {
   const { getDetailsData } = state
 
   return{
-    ...getListData
+    ...getDetailsData
   }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
       dispatch,
-      // getListData : data => dispatch(getListData(data))
+      goBackPage : (cityId, Id) => {
+         browserHistory.push('/jiadianqingxi_app/order?cityId='+cityId+'&categoryId='+Id)
+      }
     }
 }
 
@@ -34,5 +37,5 @@ const mapFunToComponent  = dispatch => ({
 
 export default
   connect(mapStateToProps, mapDispatchToProps)(
-    wrap(mapFunToComponent)(App)
+    wrap(mapFunToComponent)(Details)
   )

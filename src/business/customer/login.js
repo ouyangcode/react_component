@@ -23,6 +23,7 @@ const loginSuccess = ({ customerUserId, customerUserPhone, token }) => {
 }
 //获取用户信息
 const fetchUserInfo = query => {
+  console.log(query)
   get('/bindUser/v1', merge(query, { categoryCode: getCategoryCode() }))
   .then(({ code, data, message }) => {
     if(code === 0) { loginSuccess(data) }

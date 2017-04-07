@@ -15,8 +15,10 @@ export default Root
 //路由配置
 const Routes = () => (
   <Router history={ browserHistory } >
-    <Route path='/jiadianqingxi_app' component={ require('react-router?name=app!./containers/app') } >
-
+    <Route path='/jiadianqingxi_app' component={ require('react-router?name=app!./components/root') } >
+      <IndexRoute component = { require('react-router?name=app!./containers/app') } />
+      <Route path='details' component={ require('react-router?name=app!./containers/details') } />
+      <Route path='order' component={ require('react-router?name=app!./containers/order') } />
     </Route>
   </Router>
 )

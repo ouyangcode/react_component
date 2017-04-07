@@ -7,7 +7,7 @@
     <title></title>
     <script>
        (function (baseFontSize, fontscale) {
-         var _baseFontSize = baseFontSize || 13.31;
+         var _baseFontSize = baseFontSize || 100;
          var _fontscale = fontscale || 1;
          var win = window;
          var doc = win.document;
@@ -29,7 +29,7 @@
            doc.head.appendChild(metaEl);
          }
          metaEl.setAttribute('content', 'width=device-width,user-scalable=no,initial-scale=' + scale + ',maximum-scale=' + scale + ',minimum-scale=' + scale);
-         doc.documentElement.style.fontSize = _baseFontSize  * _fontscale + 'vw';
+         doc.documentElement.style.fontSize = _baseFontSize / 2 * dpr * _fontscale + 'px';
          window.viewportScale = dpr;
        })();
        if(!window.Promise) {

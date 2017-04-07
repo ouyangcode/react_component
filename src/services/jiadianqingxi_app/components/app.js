@@ -3,7 +3,7 @@ import '../style/index.scss'
 
 import React from 'react'
 import { setStore} from '@boluome/common-lib';
-import { Mask, SlidePage, CitySearch } from '@boluome/oto_saas_web_app_component'
+import { Mask, SlidePage, CitySearch ,Loading} from '@boluome/oto_saas_web_app_component'
 // import getListData from '../actions/app.js'
 
 const App = (props) => {console.log('props==========',props)
@@ -14,6 +14,7 @@ const App = (props) => {console.log('props==========',props)
                   ? 'https://dev-api.otosaas.com'
                   : `${location.origin}/api`
    const cityUrl = locationUrl + '/basis/v1/fanggu/fungugu/cities';
+   
    let hasData
    if (listData && listData.length > 0){
       hasData = ''

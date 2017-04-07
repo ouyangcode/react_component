@@ -1,0 +1,134 @@
+@import 'self_common';
+
+
+.detailsWrap{
+   width: $w;
+   height: $h;
+   .headerDetails{
+     width: $w;
+     @extend .pos-fixed;
+     top:0;
+     left:0;
+     height:88px;
+     border-bottom:1px solid #666;
+     background:#fff;
+     div{
+        float:left;
+        width: 15%;
+        height:$h;
+        line-height:88px;
+     }
+     .header_l{
+        img{
+           margin-left:32px;
+           width: 40px;
+           height:auto;
+          margin-top:20px;
+        }
+     }
+     .header_c{
+        width: 70%;
+        text-align: center;
+        color:rgb(17,17,17);
+        font-size:0.32rem;
+     }
+   }
+   .detailsMain{
+      width: $w;
+      @extend .pos-absolute;
+      top:89px;
+      bottom:112px;
+      overflow: auto;
+      .detailsPic{
+         width: $w;
+         height:auto;
+         background:#fff;
+         .details_img{
+            width: $w;
+            height:552px;
+            img{
+               width: $w;
+               height:$h;
+            }
+         }
+         .details_price{
+            width: $w;
+            height:auto;
+            margin-bottom:32px;
+            .title{
+               width: $w;
+               text-align: center;
+               padding:26px 0;
+               font-size:0.32rem;
+               color:rgb(38,38,38);
+            }
+            .price{
+               width: $w;
+               text-align: center;
+               padding-bottom:26px;
+               color:rgb(255,160,0);
+               span{
+                 font-size:0.36rem;
+               }
+            }
+
+         }
+      }
+      .otm{
+          padding:32px 32px;
+          background:#fff;
+          margin-bottom:32px;
+          .iconTitle{
+             width: $w;
+             height:44px;
+             line-height: 44px;
+             margin-bottom:20px;
+          }
+          .icon{
+            width: 40px;
+            height:auto;
+            max-height:40px;
+            margin-right:20px;
+            @extend .inline-block;
+            float:left;
+          }
+          span{
+              @extend .inline-block;
+              float:left;
+              color:rgb(38,38,38);
+              font-size:0.32rem;
+          }
+          .detailsPrice{
+             color:rgb(170,170,170);
+             font-size:0.28rem;
+             p{
+                line-height:44px;
+             }
+             img{
+                width: $w;
+                height:auto;
+             }
+          }
+      }
+   }
+   .orderBtnWrap{
+      @extend .pos-fixed;
+      bottom:0;
+      left:0;
+      background:#fff;
+      width: $w;
+      height:112px;
+      .orderBtn{
+         width: 60%;
+         height:90px;
+         background:rgb(255,170,0);
+         border-radius: 8px;
+         margin-left:20%;
+         margin-top:11px;
+         color:#fff;
+         font-size:0.4rem;
+         text-align: center;
+         line-height:90px;
+      }
+   }
+}
