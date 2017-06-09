@@ -1,0 +1,16 @@
+.channelContainer{
+  background-color: #fff;width: 100%;text-align: center;position: relative;box-shadow: 0rem 1px 13px gray;
+  ul{
+    list-style: none;overflow: hidden;display: inline-block;width: 100%;padding: 15px 0;
+    li{
+      float: left;height: 50px;line-height: 50px;display: inline-block;border-right: 1px solid #e5e5e5;box-sizing: border-box;
+      img{
+        width: 32px;height: 32px;vertical-align: middle;
+      }
+      span{
+        font-size: 0.28rem;display: inline-block;margin-left: 20px;color: #333;
+      }
+    }
+  }
+  .underLine{height: 4px;display: inline-block;background-color: #ff9a00;position: absolute;transition: left .3s ease;bottom: 0}
+}

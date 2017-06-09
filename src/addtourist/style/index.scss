@@ -1,0 +1,69 @@
+@import "../../../sass/lib";
+
+.addtouristWrap{
+    font-size:28px;
+    .addtouristMain{
+       width: 100%;
+       height:auto;
+       .addtitle{
+         font-size:28px;
+         color:#333333;
+         display:inline-block;
+         width: 30%;
+       }
+       .add_oto{
+          width: 20%;
+          text-align: center;
+          margin-right:3%;
+          display:inline-block;
+          height:48px;
+          border:1px solid #e5e5e5;
+          border-radius:4px;
+          font-size:24px;
+          color:#999999;
+          line-height:48px;
+       }
+       .oto_span{
+           border:1px solid #feab00;
+           color:#feab00;
+       }
+       .am-list-item .am-input-label{
+         font-size:28px;
+         color:#333333;
+       }
+       .card{
+         .am-list-extra{
+             flex-basis: 67%;
+             text-align:left;
+         }
+       }
+       .born{
+           .am-list-extra{
+               flex-basis: 67%;
+               text-align:left;
+               color:#333;
+           }
+       }
+       .SaveBtn{
+           width: 76%;
+           height:96px;
+           line-height:96px;
+           background:#ffab00;
+           border-radius:4px;
+           color:#fff;
+           font-size:38px;
+           text-align: center;
+           margin-left:12%;
+           margin-top:32px;
+       }
+      //  修改antd 里面的样式
+      .am-input-control input{
+          font-size:28px;
+      }
+    }
+    // 改变boluome的公共组件样式
+    .close-container .slide-page-close{
+        padding-right:0;
+        padding-bottom:0;
+    }
+}

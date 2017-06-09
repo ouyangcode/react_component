@@ -1,0 +1,57 @@
+@import "../../../sass/lib";
+
+.slide-page-container {
+  @extend %pos-absolute;
+  @include wh(100%, 100%);
+  @include box();
+  @include z(9);
+  @include transition($dur: .3s);
+  .close-container {
+    .slide-page-close {
+      @extend %pos-absolute;
+      @include box((right: 14px, top: 12px));
+      @include z(9);
+      @include rotate();
+      @include font(50px);
+      @include color($red);
+      @include padding(15px);
+      @include padding(0, top);
+    }
+  }
+
+  &.info {
+    @include bgc($white)
+  }
+
+  &.root {
+    @include bgc($root-bg)
+  }
+
+  &.right {
+    @include translateX(0);
+    &.hide {
+      @include translateX(300%)
+    }
+  }
+
+  &.down {
+    @include translateY(0);
+    &.hide {
+      @include translateY(300%)
+    }
+  }
+
+  &.left {
+    @include translateX(0);
+    &.hide {
+      @include translateX(-300%)
+    }
+  }
+
+  &.up {
+    @include translateY(0);
+    &.hide {
+      @include translateY(-300%)
+    }
+  }
+}

@@ -1,0 +1,63 @@
+@import "../../../sass/lib";
+
+.CardShowComponent{
+  .orderCard{
+    background:#fff;
+      .line{
+         width: calc(100% - 64px);
+         height:1px;
+         margin: 0 32px;
+         background:#e5e5e5;
+      }
+      .ordertitle{
+        font-size:24px;
+        color:#333333;
+      }
+      .ordertime{
+         width: 100%;
+         padding-top:32px;
+         div{
+            display:inline-block;
+            width: 33%;
+           .am-list-content{
+              width: 100%;
+              // display:flex;
+              // align-items: center;
+              // justify-content: space-between;
+           }
+            span{
+               display:block;
+               width: 100%;
+               text-align: center;
+            }
+         }
+         .timeoto{
+            .time{
+              font-size:50px;
+              color:#333333;
+            }
+            .text{
+              font-size:20px;
+              color:#666666;
+            }
+            .day{
+              font-size:20px;
+              color:#ffab00;
+            }
+         }
+         .jobtime{
+            height:100px;
+            text-align: center;
+            img{
+                margin-bottom:8px;
+            }
+            span{
+              display:block;
+              font-size:20px;
+              color:#999999;
+            }
+         }
+      }
+  }
+
+}

@@ -1,0 +1,12 @@
+@import "../../sass/lib";
+
+.empty-container{
+  position: absolute;width: 100%;text-align: center;height: 100%;background-color: #fff;z-index: 100;
+  img{height: 190px;}
+  svg{width: 2.5rem;height: 190px;}
+  .title{font-weight: normal;font-size: 0.4rem;color: #999;margin-top: 20px;}
+  .message{font-size: 0.3rem;color: #999;margin-top: 20px;}
+  .empty-content {
+    position: relative;top: calc( (100% - 400px) / 2);
+  }
+}

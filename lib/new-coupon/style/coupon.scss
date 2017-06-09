@@ -1,0 +1,73 @@
+@mixin middle {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.coupon-item{
+  width: 100%;
+  overflow: hidden;
+  border-bottom: 1px solid #e5e5e5;
+  height: 89px;
+  position: relative;
+  h1, li{
+    border-bottom: 1px solid #e5e5e5;
+    height: 89px;
+    line-height: 89px;
+    color: #333;
+  }
+  h1{
+    text-align: center;
+    font-size:36px;
+  }
+  .p-left{
+    @include middle;
+    font-size:40px;
+    color:#ff4848;
+    width: 110px;
+    height: 89px;
+    line-height: 89px;
+    &.ineffective{
+      color:#e5e5e5;
+    }
+    span{
+      font-size: 24px;
+    }
+  }
+  .d-center{
+    @include middle;
+    left: 140px;
+    float: left;
+    &.active{
+      padding-top: 18px;
+    }
+    .p-top{
+      line-height: 28px;
+      .s-left{
+        font-size: 28px;
+        &.ineffective{
+          color:#e5e5e5;
+        }
+      }
+      .s-right{
+        font-size:24px;
+        color:#999999;
+        &.ineffective{
+          color:#e5e5e5;
+        }
+      }
+    }
+    .p-bottom{
+      font-size:20px;
+      color:#666666;
+      line-height: 34px;
+      &.ineffective{
+        color:#e5e5e5;
+      }
+    }
+  }
+  .p-right{
+    @include middle;
+    right: 30px;
+  }
+}

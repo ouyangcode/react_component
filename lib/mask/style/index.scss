@@ -1,0 +1,19 @@
+@import "../../../sass/lib";
+
+.mask-container {
+  @extend %pos-fixed;
+  @include box();
+  @include wh();
+  @include z(99);
+  .mask {
+    @extend %pos-absolute;
+    @include box();
+    @include wh();
+    @include z(1);
+    @include o(0);
+    //@include transition($dur: .3s, $func: ease-in-out)
+    &.fade-in {
+      @include o(.3);
+    }
+  }
+}

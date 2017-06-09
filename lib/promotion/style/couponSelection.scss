@@ -1,0 +1,15 @@
+.noCoupon{
+  text-align: center;
+  color: rgb(136, 136, 136);
+  font-size: .24rem;
+  position: absolute;
+  left: 50%;
+  top:50%;
+  -webkit-transform: translateX(-50%) translateY(-30%);
+          transform: translateX(-50%) translateY(-80%);
+  img{
+    width: 2rem;
+    display: block;
+    margin-bottom: .3rem;
+  }
+}

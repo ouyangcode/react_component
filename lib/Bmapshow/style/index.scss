@@ -1,0 +1,86 @@
+@import "../../../sass/lib";
+
+.addrBumapMain{
+  font-size:32px;
+    .BMap_bubble_content{
+          font-size:32px;
+          width:500px !important;
+          min-height:100px !important;
+    }
+    .BMap_center{
+      width: 200px;
+      height:60px;
+    }
+}
+.addrBumapWrap{
+  .addrBumapMain{
+    .pak{
+      .anchorBL{
+        display:none !important;
+      }
+      .BMap_bubble_title{
+        font-size:32px;
+        padding:15px 5px 12px 5px;
+        font-weight: 600;
+        text-align: center;
+        -webkit-display: flex;
+        -webkit-align-items: center;
+        -webkit-justify-content: center;
+        -moz-display: flex;
+        -moz-align-items: center;
+        -moz-justify-content: center;
+        -ms-display: flex;
+        -ms-align-items: center;
+        -ms-justify-content: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .iw_poi_img{
+          display:inline-block;
+          width: 40px;
+          height:40px;
+          background:url(../img/addrIcon.png) no-repeat;
+          background-size: cover;
+          border: 0;
+          margin-right: 10px;
+        }
+      }
+      .BMap_bubble_content{
+        width:500px;
+        background:#fff;
+        padding:5px 5px 12px 5px;
+        .iw_poi_content {
+          width: 100%;
+          font: 28px arial,sans-serif;
+          overflow: visible;
+          padding-top: 4px;
+          white-space: -moz-pre-wrap;
+          word-wrap: break-word;
+          color: #666;
+          display:inline-block;
+        }
+        .iw_poi_copy{
+          float: right;
+          display:inline-block;
+          font-size:24px;
+          color:#ff9a00;
+        }
+      }
+      .BMap_pop{
+        div{
+          border-radius: 6px;
+        }
+        .BMap_top{
+          border-radius: 0px;
+        }
+        .BMap_center{
+          border-radius: 0px;
+        }
+        .BMap_bottom{
+          border-radius: 0px;
+          // padding:0 3px;
+        }
+      }
+    }
+  }
+}
