@@ -1,0 +1,12 @@
+@import "../../../sass/lib";
+
+.picHandleWrap{
+   width: 100%;
+   height:100%;
+   overflow: hidden;
+   img{
+    //  background:url(../img/nousebg.png) no-repeat 10%;
+    //  background-size: cover;
+     border: 0;
+   }
+}

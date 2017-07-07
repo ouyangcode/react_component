@@ -1,0 +1,53 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300);
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.loading-bro {
+  width: 100%;
+  text-align: center;
+  height:100%;
+  padding: .35rem 0;
+}
+
+#load {
+		width: 60px;
+    // animation: loading 2s linear infinite;
+    animation-name: loading;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    #loading-inner {
+		  stroke: {
+        dashoffset: 0;
+        dasharray: 330;
+        width: 10;
+        miterlimit: 10;
+        linecap: round;
+      }
+      animation-name: loading-circle;
+      animation-duration: 2s;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      stroke: #fff;
+      fill: transparent;
+    }
+	}
+
+@keyframes loading {
+		0% {
+      transform: rotate(0);
+    }
+		100% {
+      transform: rotate(360deg);
+    }
+}
+@keyframes loading-circle {
+		0% {
+      stroke-dashoffset: 0
+    }
+		100% {
+      stroke-dashoffset: -600;
+    }
+}
