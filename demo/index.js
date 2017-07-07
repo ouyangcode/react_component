@@ -25,5 +25,4 @@ new BMap.Geolocation()
     })
   })
 
-
 render(routes, document.getElementById('root'))

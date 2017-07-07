@@ -31,14 +31,17 @@ class CustomerList extends Component {
   }
     fetchContact() {
       const handleClose = Loading()
-
       let userId = getStore('customerUserId', 'session')
       get('/user/v1/contacts', { userId })
       .then(({ code, data, message }) => {
         // code = 0
         // data = [{"name":"tst","phone":"13812345678","gender":0,"longitude":121.48789949,"latitude":31.24916171,"province":"上海市","provinceId":"310000","city":"上海市","cityId":"310000","county":"闸北区","countyId":"310108","address":"新荟城","detail":"上海市闵行区莲花南路1388号","isDefault":0,"tag":"","status":0,"contactId":"1483087753105","userId":"blm_test"}]
         if(code === 0) {
-
+          if (data.length === 0) { // 在外卖中改的，2017-7-06
+            const { handleChange } = this.props
+            handleChange('')
+          }
+          // console.log('data----111--', data)
           this.setState({
             contactList: data
           })
@@ -59,10 +62,12 @@ class CustomerList extends Component {
         { text: '确定', onPress: () => {
           const { contactId, userId } = contact
           const handleClose = Loading()
-          send('/user/v1/contact', { contactId, userId }, 'delete')
+          send('/user/v1/contact', { userId, contactId }, 'delete')
           .then(({ code, data, message }) => {
             if(code === 0) {
               this.fetchContact()
+            }else {
+              console.log('err', 'contact')
             }
             handleClose()
           })
@@ -85,6 +90,7 @@ class CustomerList extends Component {
     componentWillMount() { this.fetchContact() }
     handleSuccess(contact) {
       const { handleChange, handleContainerClose } = this.props
+      console.log('contact----', contact)
       handleChange(contact)
       // handleBackgoorder()
       handleContainerClose()
@@ -93,7 +99,6 @@ class CustomerList extends Component {
     const { loading, bContactFormShow, contactList, editContact ,handleDefaultChange } = this.state
     const { contact = {} } = this.props
     const { contactId } = contact
-    //console.log('editContact', editContact);
     return (
         <div className='contact-list'>
           <List>
@@ -130,7 +135,7 @@ export default CustomerList
 
 
 const Contact = ({ contact, index, checked, onChooseContact, onEditContact, onDeleteContact, onSetContact }) => {
-  const { name, gender = '', phone, tag, detail, province, county, address } = contact
+  const { name, gender = '', phone, tag, detail, province, county, address, houseNum } = contact
 
   return (
 
@@ -158,6 +163,7 @@ const Contact = ({ contact, index, checked, onChooseContact, onEditContact, onDe
             <WhiteSpace size='md' />
             <div className='addr'>
                 { detail && <span>{ detail }</span> }
+                { houseNum && <span>{ houseNum }</span> }
             </div>
         </div>
         <div className = "moreBtn">

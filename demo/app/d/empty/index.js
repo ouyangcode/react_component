@@ -22,6 +22,7 @@ const EmptyDemo = () => {
               title = '我是 titile，不传我则不显示'
               message = '我是 message，我是必传参数'
               button = { <Button  /> }
+              style = {{ zIndex: 10 }}
             />
           </SlidePage>
         , { mask: false, style: { position: 'absolute' } })

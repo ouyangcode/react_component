@@ -45,11 +45,25 @@
 
   * [收货地址的显示 (ContactShow)](#收货地址的显示)
 
-  * [优惠展示](#优惠展示)
+  * [优惠展示 (ActivePopup)](#优惠展示)
 
   * [增量加载 (Listview)](#增量加载)
 
   * [星级评价 (Evaluation)](#星级评价)
+
+  * [卡片展示 (Cardshow)](#卡片展示)
+
+  * [地图展示 (Bmapshow)](#地图展示)
+
+  * [日历组件 (MyCalendar)](#日历组件)
+
+  * [常用旅客列表 (Tourist)](#常用旅客列表)
+
+  * [编辑常用旅客 (AddTourist)](#编辑常用旅客)
+
+  * [三充两缴用户协议 (PayTips)](#三充两缴用户协议)
+
+  * [通告栏 (NoticeBarBLM)](#通告栏)
 
 ---
 
@@ -140,12 +154,12 @@ Props:
 |target|String|right|right, bottom, left, up|滑出层方向|
 |type|String|info|info, root|滑出层类型，info为白色，root为灰色|
 |showClose|Boolean|true||是否显示关闭按钮，如果不显示则需要子组件实现关闭|
+|showHash|Boolean|true||是否在location里追加hash|
 |closeComponent|React Component|||自定义关闭按钮|
 |style|Object|||自定义样式|
 
 
 ```js
-  import { Mask, SlidePage } from '@boluome/oto_saas_web_app_component'
 
   //普通用法
   Mask(<SlidePage target='right'><ChildComponent /></SlidePage>, { mask: false })
@@ -377,6 +391,7 @@ Props:
 |title|String|显示的大标题内容，如果不传则不显示。|
 |message|String|显示的主要文本，必传。|
 |button|Component|如果需要按钮功能可以组件的方式传此参数，回掉样式均自定义，如果不传则不显示。|
+|style|Object|自定义样式，非必传。|
 
 ```js
   <Empty
@@ -479,8 +494,37 @@ Props:
 | popupStyle            | Object    | 自定义弹出层样式  |
 | handlePromotionChange |  Function | 点击运行的函数    |
 
-
-> 注：handlePromotionChange应一个回调函数，默认参数是一个对象：{ discountPrice, promotionBackData }。 discountPrice表示当前折扣价格，promotionBackData表示当前平台活动接口返回的data
+```js
+// 注：handlePromotionChange应一个回调函数，返回数据格式: -->
+{
+  discountPrice: '总价格',
+  promotionBackData: {
+    activity: {   // 当前选中的活动信息
+      deductionPrice:20,
+      discount:0.9,
+      id:"855",
+      mutex:1,
+      subtitle:null,
+      threshol:40,
+      title:"非互斥-满40打9折",
+      type:2,
+      value:20
+    },
+    coupons: {   // 当前选中的红包信息
+      deductionPrice:20,
+      discount:0.9,
+      id:"855",
+      mutex:1,
+      subtitle:null,
+      threshol:40,
+      title:"非互斥-满40打9折",
+      type:2,
+      value:20
+    },
+    target: "platform"
+  }
+}
+```
 
 
 ------
@@ -492,7 +536,7 @@ Props:
 ```
 
 
-----------
+Props:
 
 |  参数名  | 类型  | 必需 |  描述  |
 | --- | --- | --- | --- |
@@ -512,9 +556,173 @@ Props:
   <Evaluation defaultValue={ '50%' } width={ '300px' } />
 ```
 
-----------
+Props:
 
 |  参数名  | 类型  | 必需 |  描述  |
 | --- | --- | --- | --- |
 | defaultValue | String  | 是 | 显示点亮星级的百分比  |
 | width | String  | 否 | 五颗星星总宽度  |
+
+
+### 地图展示
+
+* Bmapshow
+```js
+    // 参数案例
+    const addrTitlename = '上海东林寺'
+    const addrnameStr = '上海市金山区朱泾镇东林街150号'
+    const longitude = '121.165817873'
+    const latitude = '30.8942060743'
+
+    <Bmapshow
+        addrTitlename={ addrTitlename }
+        addrnameStr={ addrnameStr }
+        latitude={ latitude }
+        longitude={ longitude }
+     />
+```
+Props:
+
+|  参数名  | 类型  | 必需 |  描述  |
+| --- | --- | --- | --- |
+| addrTitlename | String  | 是 | 地点显示名称  |
+| addrnameStr | String  | 是 | 地点地址名称  |
+| latitude | String  | 是 | 地点纬度  |
+| longitude | String  | 是 | 地点经度  |
+| showMap | Boolean | 否 | 是否需要转化成百度经纬度（默认true不转化） |
+
+---
+
+### 日历组件
+
+* MyCalendar
+```js
+    const pricearr = [
+        {
+           date: "2017-06-14"
+           sellPrice: 30
+        },
+        {
+           date: "2017-06-15"
+           sellPrice: 30
+        },
+        {
+           date: "2017-06-16"
+           sellPrice: 30
+        }
+    ]
+    <MyCalendar pricearr = { pricearr } onChange = { (res) =>  console.log('test_Calendar',res) } />
+
+    res = {
+       date: "2017-07-04",        // 选择的时间（ pricearr 里面的 ）
+       datestr: 1499097600000,    // 时间戳
+       price: 25                  // 数据里的价格
+    }
+```
+
+Props:
+
+|参数名  |类型  |必需 |描述  |
+| --- | --- | --- | --- |
+| pricearr | Array  | 否 | 在日历中需要展示的特别数据  |
+| onChange | Function | 否 | 点击返回日期数据对象  |
+
+---
+
+### 常用旅客列表
+
+* Tourist
+
+```js
+  <Tourist />
+```
+Props:
+
+|参数名 |类型 |描述  |
+|--- |--- |---  |
+| handleChange | Function | 当发生收货地址变更  |
+
+```js
+
+  Mask(
+    <SlidePage target='right' type='root' >
+      <ContactList handleChange={ contact => console.log(contact) }/>
+    </SlidePage>
+    , { mask: false, style: { position: 'absolute' } }
+  )
+```
+
+---
+
+### 编辑常用旅客
+
+* AddTourist
+
+```js
+  <AddTourist  onSuccess = { () => console.log('tianjiacehnggong')}/>
+```
+
+---
+
+### 卡片展示
+
+* Cardshow
+```js
+    // 参数示例
+    const openCard = {
+      nameTitle:      '上海欢乐科技园',
+      startTime:      '10 : 00',
+      durationTime:   '营业时间长8时30分',
+      endTime:        '18 : 30',
+      textArr:        ['开放时间', '结束时间', '日常成人票 ¥ 180','游玩时注意安全哦～', '景点地址：'],
+      startDate:      '05月03日',
+      endDate:        '05月03日',
+      imgIcon:        '@',
+      addressStr:     '上海市花园路128号2091',
+      nodurationTime: '请联系商家',
+    }
+    const handleGoaddrMap = () => {
+      alert('走，去地图～～')
+    }
+
+    <CardShow openCard={ openCard } onChange={ handleGoaddrMap } />
+```
+Props:
+
+|参数名  |类型  |必需 |描述  |
+| --- | --- | --- | --- |
+| openCard | Object  | 是 | 需要展示在卡片上的 数据 |
+| onChange | Function | 是 | 点击事件(地图)  |
+
+---
+
+### 三充两缴用户协议
+
+* PayTips
+```js
+    // 参数示例
+    <PayTips title='生活缴费提示' content={ <Content /> } />
+```
+Props:
+
+|参数名  |类型  |必需 |描述  |
+| --- | --- | --- | --- |
+| title | String  | 是 | 弹出框的标题 |
+| content | Component | 是 | 弹出框的内容  |
+
+> 因为弹出框内容要求分段，所以以组件形式传入
+
+---
+
+### 通告栏
+
+* NoticeBarBLM
+```js
+    // 参数示例
+    <NoticeBarBLM text='如果不传text，默认显示：服务商维护如遇无法充值，请稍后再试' />
+```
+Props:
+
+|参数名  |类型  |必需 |描述  |
+| --- | --- | --- | --- |
+| text | String  | 否 | 通告栏内容 |

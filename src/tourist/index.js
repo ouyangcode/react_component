@@ -20,27 +20,30 @@ import { merge, clone } from 'ramda'
 const ListItem = List.Item
 const FlexItem = Flex.Item
 const alert = Modal.alert
+let closealert = ''
 
 class Tourist extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      contactList: [],
-      bContactFormShow: false,
-      editContact: {},
-      userId :getStore('customerUserId', 'session')
+    constructor(props) {
+      super(props)
+      this.state = {
+        contactList: [],
+        bContactFormShow: false,
+        editContact: {},
+        userId :getStore('customerUserId', 'session')
+      }
     }
-  }
     fetchContact() {
       const handleClose = Loading()
-
       let userId = getStore('customerUserId', 'session');console.log('userId---',userId);
       get('/user/v1/identities', { userId })
       .then(({ code, data, message }) => {
         // code = 0
         // data = [{"name":"tst","phone":"13812345678","gender":0,"longitude":121.48789949,"latitude":31.24916171,"province":"上海市","provinceId":"310000","city":"上海市","cityId":"310000","county":"闸北区","countyId":"310108","address":"新荟城","detail":"上海市闵行区莲花南路1388号","isDefault":0,"tag":"","status":0,"contactId":"1483087753105","userId":"blm_test"}]
         if(code === 0) {
-            console.log('data----',data);
+          if (data.length === 0) {
+            const { handleChange } = this.props
+            handleChange('')
+          }
           this.setState({
             contactList: data
           })
@@ -56,7 +59,7 @@ class Tourist extends Component {
       // this.setState({ bContactFormShow: bShow, editContact: contact })
     }
     handleDeleteContact(contact) {
-      alert('删除', '确定删除么?', [
+      closealert = alert('删除', '确定删除么?', [
         { text: '取消', onPress: () => console.log('cancel') },
         { text: '确定', onPress: () => {
           const { identityId, userId } = contact;console.log(contact);
@@ -70,7 +73,6 @@ class Tourist extends Component {
           })
         }, style: { fontWeight: 'bold' } },
       ])
-
     }
     handleFormSuccess() {
       this.fetchContact()
@@ -84,11 +86,20 @@ class Tourist extends Component {
           }
         })
     }
-    componentWillMount() { this.fetchContact() }
+    componentWillMount() {
+      this.fetchContact()
+    }
+    componentWillUnmount() {
+      if (closealert) {
+        closealert.close()
+      }
+    }
     handleSuccess(contact) {
         const { handleChange, handleContainerClose } = this.props
         handleChange(contact)
-        handleContainerClose()
+        if (handleContainerClose) {
+          handleContainerClose()
+        }
     }
   render() {
     const { loading, bContactFormShow, contactList, editContact ,handleDefaultChange ,userId } = this.state
@@ -128,7 +139,6 @@ class Tourist extends Component {
 }
 
 export default Tourist
-
 
 const Contact = ({ contact, index, checked, onChooseContact, onEditContact, onDeleteContact, onSetContact }) => {
   const { name , id , phone ,type , cardType, idCard, status ,bornDate } = contact

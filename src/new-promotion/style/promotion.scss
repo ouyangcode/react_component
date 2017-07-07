@@ -1,3 +1,7 @@
+ul, dl {
+  list-style: none;
+}
+
 .s-promotion{
   .activity{
     .header-unavailable{
@@ -45,7 +49,7 @@
         float: left;
         font-size:28px;
         color:#333333;
-        width: 360px;
+        width: 300px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;

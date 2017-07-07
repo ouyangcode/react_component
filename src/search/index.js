@@ -25,12 +25,18 @@ class Search extends Component {
     else { this.setState({ inputWidth: '100%' }) }
   }
 
+  handleScroll () {
+    // console.log('scroll')
+    const { onScroll } = this.props
+    onScroll && onScroll()
+  }
+
 // 请求列表数据
   feachList (searchKey){
+    // console.log('searchKey-==--=-=-=-==-=-=--==-', searchKey.length)
     const { onFeach, delayTime = 500 } = this.props
-    // console.log('timing', timing);
     this.setState({ searchKey })
-    if(searchKey){
+    if(searchKey.length > 0){
       this.setState({ loaded: 0 })
       clearTimeout(timer)
       timer = setTimeout(
@@ -40,20 +46,23 @@ class Search extends Component {
           }
           this.setState({ dataList, loaded: 1 })
         }), delayTime)
+    } else {
+      console.log('no words')
+      this.setState({ dataList: [] })
     }
   }
 
   handleClick (item){
-    const { handleResult, timing=500 } = this.props
+    const { handleResult, timing = 500 } = this.props
     // const { resultInHistory } = this.props
     handleResult(item)
     // resultInHistory(item)
-    timing!==0 && this.props.handleContainerClose()
+    timing !== 0 && this.props.handleContainerClose()
   }
-  handleKeywordChange (keyword){
+  handleKeywordChange (keyword) {
     // 把keyword 放进输入框
     // 搜索
-    this.setState({searchKey: keyword},this.feachList(keyword))
+    this.setState({ searchKey: keyword }, this.feachList(keyword))
   }
 
   render() {
@@ -78,8 +87,8 @@ class Search extends Component {
           }
         </div>
         {
-          searchKey.length > 0
-            ? <SearchResultList { ...{ dataList, listItem, searchKey, noResult, content, loaded, onClick: this.handleClick.bind(this) } } />
+          searchKey.length > 0 && loaded
+            ? <SearchResultList { ...{ dataList, listItem, searchKey, noResult, content, loaded, onClick: this.handleClick.bind(this), onScroll: this.handleScroll.bind(this) } } />
             : <div></div>
         }
         {
@@ -92,12 +101,12 @@ class Search extends Component {
 
 export default Search
 
-const SearchResultList = ({ dataList = [], searchKey, listItem, noResult, onClick, content, loaded }) => {
+const SearchResultList = ({ dataList = [], searchKey, listItem, noResult, onClick, content, loaded, onScroll }) => {
   console.log('loaded------------',loaded,dataList);
   if(dataList && dataList.length > 0) {
     return (
       <div>
-        <div className='dataList'>
+        <div className='dataList' onScroll={ () => { onScroll() } }>
           <ul>
             {
               dataList.map((data, index) => <li key={ `SearchResultList-${ Math.random() }` } onClick={ () => {onClick(data)} } >

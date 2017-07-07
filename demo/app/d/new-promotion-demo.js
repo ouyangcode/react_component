@@ -1,7 +1,7 @@
 import React from 'react'
 import { NewPromotion } from '@boluome/oto_saas_web_app_component'
 
-const NewPromotionDemo        = () => <NewPromotion orderType="menpiao" channel="lvmama" amount={ 495 } count={ 3 } handleChange={ (reply) => console.log(reply) }   />
+const NewPromotionDemo        = () => <NewPromotion orderType="waimai" channel="ele" amount={ 151 } handleChange={ (reply) => console.log(reply) }   />
 
 export default NewPromotionDemo
 

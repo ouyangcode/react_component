@@ -22,12 +22,22 @@ class AddressSearch extends Component {
     }
     this.mapContainer
     this.map
-    console.log('this.state',this.state)
   }
-
+  // input 获取焦点 width: 100%
+  inputOnFocus(){
+    this.setState({ focus: true })
+    console.log('我是聚焦')
+  }
+  // input 失去焦点
+  inputOnBlur(){
+    this.setState({ focus: false })
+    console.log('我是失焦')
+  }
   componentDidMount() {
       const { geoPoint } = this.state
       this.getGoLocation(geoPoint)
+      // console.log(document.getElementById('test'))
+      document.getElementById('test').focus()
   }
   // 通过经纬度定位，联动
   getGoLocation(geoPoint) {
@@ -55,10 +65,10 @@ class AddressSearch extends Component {
       closeLoading()
     })
   }
-  handleSearchAddr(keyWord) {console.log('开始搜索')
+  handleSearchAddr(keyWord) { console.log('开始搜索')
     this.localSearch.search(keyWord)
     this.setState({ keyWord })
-    console.log('woshi ---state',this.state)
+    // console.log('woshi ---state',this.state)
   }
   searchComplete(reply) {
     if(reply) {
@@ -83,7 +93,7 @@ class AddressSearch extends Component {
       <div>
         <div className='search-address-container'>
   				<div className='search'>
-  					<input type = 'text' placeholder = '请输入地址' onChange = {({ target }) => this.handleSearchAddr(target.value) } />
+  					<input type = 'text' placeholder = '请输入地址' onChange = {({ target }) => this.handleSearchAddr(target.value) } onLoad={ e => { console.log('e', e) } } id='test'/>
   				</div>
           {
             keyWord.length > 0 ? (

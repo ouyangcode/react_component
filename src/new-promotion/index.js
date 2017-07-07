@@ -209,9 +209,14 @@ class ActivityItem extends React.Component {
 
     // rightInfo表示右侧需要显示的文字
     let rightInfo = ''
-    if (threshold > amount) {
-      if (type === 1 || type === 2) rightInfo = `还差${ (threshold - amount).toFixed(2) }元`
-      if(type === 3 || type === 4) rightInfo = `还差${ numToChinese((threshold - count).toFixed(0)) }件`
+    let discType = '减'
+    if (type === 2 || type === 4) {
+      discType = '折'
+    }
+    if ((type === 1 || type === 2) && threshold > amount) {
+      rightInfo = `还差${ (threshold - amount).toFixed(2) }元`
+    } else if ((type === 3 || type === 4) && threshold > count) {
+      rightInfo = `还差${ numToChinese((threshold - count).toFixed(0)) }件`
     } else {
       if(activityType === 'coupon') {
         if (isFirst) {
@@ -227,7 +232,7 @@ class ActivityItem extends React.Component {
     return (
       <ul className='activity-item'>
         <li>
-          <p className={ availability ? '' : 'unavailable' }>减</p>
+          <p className={ availability ? '' : 'unavailable' }>{ discType }</p>
           <span></span>
         </li>
         <div>
@@ -261,7 +266,7 @@ const mockData =
       subtitle:null,
       threshold:600,
       title:"满600-10",
-      type:1,
+      type:2,
       value:10
     },
     {
@@ -271,7 +276,17 @@ const mockData =
       subtitle:null,
       threshold:700,
       title:"满700-10",
-      type:1,
+      type:3,
+      value:10
+    },
+    {
+      discount:1,
+      id:"667",
+      mutex:0,
+      subtitle:null,
+      threshold:700,
+      title:"满700-10",
+      type:4,
       value:10
     },
   ],

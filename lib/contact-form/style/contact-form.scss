@@ -1,1 +1,85 @@
-
+// 定义标签样式
+.content{
+  .contactWrap{
+    width: 100%;
+    height:100%;
+    overflow: hidden;
+    overflow-y: scroll;
+    .addressSpan{
+      // background:pink;
+      width: 80%;
+      display:inline-block;
+      // white-space: nowrap;
+      // overflow: hidden;
+      // text-overflow: ellipsis;
+      color:#666;
+      font-size:28px;
+    }
+    .addressSpan0{
+      color:#000;
+    }
+  }
+  .am-list .am-list-body{
+  .tagList{
+    .tag{
+      font-size:24px;
+      color:#999;
+      border:1px solid #e5e5e5;
+      display:inline-block;
+      width: 30%;
+      padding:10px 0 10px 0;
+      text-align: center;
+      margin-right: 4%;// 2017-7-7 外卖兼容IOS 8.0
+    }
+    .otoOrange{
+      color:#ffab00;
+      border: 1px solid #ffab00;
+    }
+    .am-list-line .am-list-extra{
+      -webkit-flex-basis: 65%;
+      flex-basis: 65%;
+      text-align: left;
+      width:72%;// 2017-7-7 外卖兼容IOS 8.0
+    }
+    .am-list-line .am-list-content{
+      -webkit-box-flex: 0.7;
+      flex:0.7;
+    }
+  }
+  .am-list-line .sixLable{
+    width: 80%;
+    float:right;
+    .gray{
+      display:inline-block;
+      padding:5px;
+      margin-right:5%;
+      text-align: center;
+      color:#999;
+      width:25%;
+      border:1px solid #e5e5e5;
+      border-radius:4px;
+      font-size:24px;
+    }
+    .otoOrange{
+      color:#ffab00;
+      border: 1px solid #ffab00;
+    }
+  }
+  .am-list-name{
+    .am-list-line:after{
+      width: 81%;
+      left:19%;
+    }
+  }
+  .am-list-point{
+    .am-list-line .am-list-extra{
+      -webkit-flex-basis: 72%;
+      flex-basis: 72%;
+      text-align: left;
+    }
+    .am-list-line .am-list-content{
+      width:25%;
+    }
+  }
+}
+}

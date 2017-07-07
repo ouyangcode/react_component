@@ -3,19 +3,25 @@ import React from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
 import { merge, compose } from 'ramda'
 
+const MaskList = []
+
 const Mask = (content, options) => {
     const body = document.body
     const node = document.createElement('div')
-    node.className += ' my-mask'      //暴露出一个class名，方便点击组件外dom，实现关闭当前遮罩
+
     const preventDefaul = e => e.preventDefault()
     const handleContainerClose = () => {
-      unmountComponentAtNode(node)
-      node.remove()
+      if (unmountComponentAtNode(node)) node.remove()
       document.documentElement.style.overflow = ''
+      document.body.style.overflow = ''
     }
 
+    MaskList.push(handleContainerClose)
+
     document.documentElement.style.overflow = 'hidden'
+    document.body.style.overflow = 'hidden'
     body.appendChild(node)
+
     render(
       <MaskContainer { ...{ handleContainerClose } } { ...options}>
         { React.cloneElement(content, { handleContainerClose }) }
@@ -23,6 +29,14 @@ const Mask = (content, options) => {
       node
     )
     return handleContainerClose
+}
+
+Mask.__proto__.closeAll = () => {
+  if (MaskList.length > 0) {
+    setTimeout(MaskList.shift(), 0)
+    Mask.closeAll()
+    location.hash = ''
+  }
 }
 
 const localMaskContainerStyle = {}

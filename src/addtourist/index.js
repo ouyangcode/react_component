@@ -4,7 +4,7 @@ import React from 'react'
 import { setStore ,getStore, get, send } from '@boluome/common-lib'
 import moment from 'moment'
 import { clone, merge } from 'ramda'
-import { Calendar } from "@boluome/oto_saas_web_app_component"
+import { Calendar, SlidePage } from "@boluome/oto_saas_web_app_component"
 import { List , InputItem , Picker , WhiteSpace ,DatePicker ,Accordion ,Toast } from "antd-mobile"
 
 import Loading       from '../loading'
@@ -90,7 +90,7 @@ class AddTourist extends React.Component{
         Toast.info('请填写姓名')
         return
       }
-      console.log('phone', phone);
+      // console.log('phone', phone);
       if(!(/^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(17[0-9]{1}))+\d{8})$/.test(phone))) {
         Toast.info('请填写正确手机')
         return
@@ -107,7 +107,7 @@ class AddTourist extends React.Component{
         Toast.info('请填选择出生日期')
         return
       }
-      let birthday = getStore('birthday' ,'session');console.log('bornDate----',bornDate,'birthday----',birthday);
+      let birthday = getStore('birthday' ,'session');// console.log('bornDate----',bornDate,'birthday----',birthday);
       if(bornDate != birthday){
           Toast.info('证件号码错误')
           return
@@ -141,6 +141,9 @@ class AddTourist extends React.Component{
     onSuccess()
     handleContainerClose()
   }
+  componentWillUnmount() {
+    SlidePage.closeAll()
+  }
   componentDidMount() {
       // const { geoPoint } = this.state
       // this.handleDatefn()
@@ -151,25 +154,26 @@ class AddTourist extends React.Component{
               label: '身份证',
               value: '身份证',
             },
-            {
-              label: '护照',
-              value: '护照',
-            },
-
+            // {
+            //   label: '护照',
+            //   value: '护照',
+            // },
         ];
         const date1= new Date();
         const maxDate = moment(date1, 'YYYY-MM-DD');
         const minDate = moment('1900-01-01', 'YYYY-MM-DD');
-        console.log('seasons',seasons);
+        // console.log('seasons',seasons);
         // 如果是修改常用旅客信息
         const { id, type, phone, name, bornDate , cardType, idCard, status, identityId , isDefault } = this.state
-        // const { editContact={} } = this.props
-        // const {  id='', type='', phone='', name='',  cardType='', idCard='', status='', identityId='' , isDefault=''  } = editContact
-        // const { bornDate } = this.state
-        console.log('bornDate1111111',bornDate);
       return (
         <div className = "addtouristWrap">
            <div className = "addtouristMain">
+             <List>
+               <Item>
+                 <div className='tcenter black font-x'>{ this.edit ? '编辑' : '新增' }常用旅客</div>
+               </Item>
+             </List>
+             <WhiteSpace size='lg' />
               <List>
                   <Item>
                       <span className = "addtitle">类型</span>
@@ -190,16 +194,10 @@ class AddTourist extends React.Component{
                     onChange={ this.handlePhoneChange }
                     maxLength='11'
                   >手机号码</InputItem>
-                  <Picker
-                    data={seasons}
-                    title="证件类型"
-                    extra={ cardType ? cardType : '身份证' }
-                    cols='1'
-                    value={this.state.dpValue}
-                    onChange={v => this.setState({ dpValue: v })}
-                  >
-                  <Item className = "card" arrow="horizontal">证件类型</Item>
-                  </Picker>
+                  <InputItem
+                    value="身份证"
+                    editable={false}
+                  >证件类型</InputItem>
                   <InputItem className = "oto_int"
                     type="text"
                     placeholder="请输入证件号码"

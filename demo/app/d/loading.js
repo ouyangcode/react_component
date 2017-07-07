@@ -9,7 +9,7 @@ export const NormalLoading = () => (
   onClick={
     () => {
         const handleClose = Loading({ maskClosable: false })
-        setTimeout(handleClose, 1000)
+        setTimeout(handleClose, 300000)
     }
   }>Loading</Item>
 )
@@ -19,7 +19,7 @@ export const LoadingWithoutMask = () => (
   onClick={
     () => {
         const handleClose = Loading({ maskClosable: false, mask: false })
-        setTimeout(handleClose, 1000)
+        setTimeout(handleClose, 3000)
     }
   }>Loading，不带遮罩</Item>
 )
@@ -32,7 +32,7 @@ export const LoadingCustomize = () => (
                                       component: <Icon type='loading' />,
                                       maskClosable: false,
                                       mask: true,
-                                      style: { color: '#fff' } 
+                                      style: { color: '#fff' }
                                     })
         setTimeout(handleClose, 1000)
     }

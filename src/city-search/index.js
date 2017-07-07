@@ -27,6 +27,7 @@ export default class CitySearch extends React.Component {
         }
         const getReqData = this.getReqData.bind(this)
         this.chose.bind(this)
+        this.handleCityIndexClick = this.handleCityIndexClick.bind(this)
     }
     componentDidMount() {
       this.getReqData()
@@ -150,7 +151,7 @@ export default class CitySearch extends React.Component {
               { cityIndex.map( (item, index) => {
                 return (
                 <li key={ index }>
-                    <a href={ `#city${ item }` }>{ item==='Location' ? '定位' : item==='History' ? '历史' : item }</a>
+                    <span onClick={ () => this.handleCityIndexClick(item) }>{ item==='Location' ? '定位' : item==='History' ? '历史' : item }</span>
                 </li>
               )}) }
             </ul>
@@ -175,6 +176,10 @@ export default class CitySearch extends React.Component {
            rightComponent={ showCancel && <Cancel /> }
          />
       )
+    }
+
+    handleCityIndexClick(cityIndex) {
+      document.getElementById(`city${ cityIndex }`).scrollIntoView()
     }
 
     chose(result) {

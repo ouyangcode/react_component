@@ -47,8 +47,13 @@ export Evaluation from './evaluation'
 // Focus
 export Focus from './focus'
 // Pichandle
-export Pichandle from './picHandle'
+export PicHandle from './pic-handle'
 // Bmapshow
-export Bmapshow from './Bmapshow'
+export MapShow from './map-show'
 // CardShow
-export CardShow from './Cardshow'
+export CardShow from './card-show'
+
+// payTips
+export PayTips from './pay-tips'
+// NoticeBarBLM
+export NoticeBarBLM from './notice-bar-b-l-m'

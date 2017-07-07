@@ -1,23 +1,25 @@
 import React, { Component } from 'react'
-import { unmountComponentAtNode } from 'react-dom'
 import { Flex, Icon, List, Switch, Toast } from 'antd-mobile'
 import { getStore, send } from '@boluome/common-lib'
 import { Mask } from '@boluome/oto_saas_web_app_component'
-import { createForm } from 'rc-form'
 
 import './ActivePopup.scss'
 
 class ActivePopup extends Component{
   constructor(props){
     super(props)
+    const { OTO_SAAS = {} } = window
+    const { customer = {} } = OTO_SAAS
+    const { showActivePopup = false } = customer
     this.state = {
-      promotionBackData: {},
-      popupShow: false
+      promotionBackData: '',
+      popupShow: showActivePopup,
+      showActivePopup,
     }
-    this.handleChange = this.handleChange.bind(this)
     this.fetchActivity = this.fetchActivity.bind(this)
     this.getPromotionData = this.getPromotionData.bind(this)
-    this.handlePopupClick = this.handlePopupClick.bind(this)
+    this.handlePopupIconClick = this.handlePopupIconClick.bind(this)
+    this.handleClose
   }
 
   componentWillMount(){
@@ -44,92 +46,89 @@ class ActivePopup extends Component{
         target: 'platform',
         count: 1
       }
-      amount && this.fetchActivity(postData)
+      if (!parseFloat(amount)) {
+        this.setState({ promotionBackData: { target: 'unavailable' } })
+        this.closeMask()
+        return
+      }
+      // amount && this.fetchActivity(postData)
+      if (amount) {
+        this.fetchActivity(postData)
+        this.setState({ popupShow: this.state.showActivePopup })
+      }
     }
   }
 
   fetchActivity(para){
     send('/promotion/query_promotions', para, { 'Content-Type': 'application/x-www-form-urlencoded' })
     .then(({ code, data = {}, message }) => {
-      const useMock = true       //是否使用模拟数据的开关，线上改成false
+      const useMock = false       //是否使用模拟数据的开关，线上改成false
       if(useMock){
         // 模拟红包数据
         const promotionBackData = {
-          activityType: 'platform',    //改变活动类型，共四种："platform","coupon","mixed","unavailable"
+          target: 'platform',    //改变活动类型，共四种："platform","coupon","mixed","unavailable"
           activity: { deductionPrice: 10, title: '活动优惠' },
           coupons: [{ deductionPrice: 10 }]
         }
-        this.setState({ promotionBackData })
-        this.getPromotionData()
+        this.getPromotionData(promotionBackData)
         return
       }
-
       if(code === 0) {
-        data.activityType = data.target
-        this.setState({ promotionBackData: data })
-        this.getPromotionData()
+        this.getPromotionData(data)
       } else {
         // Toast.fail(message)
-        console.log(message);
       }
     })
   }
 
-  getPromotionData(){
-    const handlePromotionChange = this.props.handlePromotionChange
-    const { promotionBackData } = this.state
-    const { popupStyle, defaultShow } = this.props
-    const { activityType, activity, coupons } = promotionBackData
+  getPromotionData(data){
+    const { handlePromotionChange, popupStyle  } = this.props
+    const { showActivePopup, popupShow } = this.state
+
+    const { target, activity, coupons } = data
+    let promotionBackData = {}
     let discountPrice = 0
-    if(activityType === 'platform' || activityType === 'mixed'){
+    promotionBackData.target = target
+    // 根据target有选择的返回数据（短流程红包，只需要返回第一个数据）
+    if (target === 'platform' || target === 'mixed') {
+      promotionBackData.activity = activity
       discountPrice += activity.deductionPrice
     }
-
-    if (activityType === 'coupon' || activityType === 'mixed') {
+    if (target === 'coupon' || target === 'mixed') {
+      promotionBackData.coupons = coupons[0]
       discountPrice += coupons[0].deductionPrice
     }
+    this.setState({ promotionBackData })
     handlePromotionChange({ discountPrice, promotionBackData })
 
-    if (activityType !== 'unavailable' && defaultShow) {
-      Mask(<ActivityItem {...{ activityType, activity, coupons }} />, { style: popupStyle, maskClick: () => {
-        this.setState({ popupShow: this.state.popupShow })
+    if (target && target !== 'unavailable' && showActivePopup) {
+      this.hanldeClose = Mask(<ActivityItem {...{ promotionBackData, handleCloseIcon: this.handlePopupIconClick }} />, { style: popupStyle, maskClosable: true, maskClick: () => {
+        this.setState({ popupShow: !popupShow })
       } })
     }
   }
 
-  handleChange(res){
-    // this.props.handleSwitchChange(res)
-  }
-
-  handlePopupClick () {
+  handlePopupIconClick () {
     const { popupStyle } = this.props
-    const { activityType, activity, coupons } = this.state.promotionBackData
-    const maskNode = document.querySelector('.my-mask')
-    this.setState({ popupShow: !this.state.popupShow })
-    const closeMask = () => {
-      unmountComponentAtNode(maskNode)
-      maskNode.remove()
-      document.documentElement.style.overflow = ''
-    }
-    if (maskNode) {
-      closeMask()
+    const { promotionBackData, popupShow } = this.state
+    if (popupShow) {
+      this.hanldeClose()
+      this.setState({ popupShow: !popupShow })
     } else {
-      Mask(<ActivityItem {...{ activityType, activity, coupons, handleCloseIcon: this.handlePopupClick }} />, { style: popupStyle, maskClick: () => {
-        this.setState({ popupShow: !this.state.popupShow })
-      } })
+      this.hanldeClose = Mask(<ActivityItem {...{ promotionBackData, handleCloseIcon: this.handlePopupIconClick }} />, { style: popupStyle, maskClick: () => { this.setState({ popupShow }) } })
+      this.setState({ popupShow: !popupShow })
     }
   }
 
 
 
   render(){
-    const { form } = this.props
-    const { popupShow } = this.state
-    const { getFieldProps } = form
-    const { activityType } = this.state.promotionBackData
+    const { popupShow, promotionBackData } = this.state
+    console.log('popupShow', popupShow);
+    const { target } = promotionBackData
     return (
       <div className='acitivity-icon'>
-        { (activityType === 'mixed' || activityType === 'coupon' || activityType === 'platform') && <Icon className={ popupShow ? 'active-popup-icon active' : 'active-popup-icon' } type={ require('./img/arrow.svg')} onClick={ this.handlePopupClick } /> }
+        { (target === 'mixed' || target === 'coupon' || target === 'platform') && <Icon className={ popupShow ? 'active-popup-icon active' : 'active-popup-icon' } type={ require('./img/arrow.svg')} onClick={ this.handlePopupIconClick } /> }
       </div>
     )
   }
@@ -138,10 +137,10 @@ class ActivePopup extends Component{
 
 
 
-const ActivityItem = ({ activityType, activity, coupons, handleCloseIcon }) => {
+const ActivityItem = ({ promotionBackData, handleCloseIcon }) => {
   const FlexItem = Flex.Item
   const ListItem = List.Item
-
+  const { target, activity, coupons } = promotionBackData
   return (
     <div className='active-popup-container'>
       <Flex className='header'>
@@ -156,8 +155,8 @@ const ActivityItem = ({ activityType, activity, coupons, handleCloseIcon }) => {
         </FlexItem>
       </Flex>
       <List>
-        { (activity && (activityType==='platform' || activityType==='mixed')) && <ListItem extra={ `- ¥ ${ activity.deductionPrice }` }> <span className='ac-icon-style'>减</span>{ activity.title }</ListItem> }
-        { (coupons && (activityType==='coupon' || activityType==='mixed')) && <ListItem extra={ `- ¥ ${ coupons[0].deductionPrice }` }>红包抵扣</ListItem> }
+        { (activity && (target==='platform' || target==='mixed')) && <ListItem extra={ `- ¥ ${ activity.deductionPrice }` }> <span className='ac-icon-style'>减</span>{ activity.title }</ListItem> }
+        { (coupons && (target==='coupon' || target==='mixed')) && <ListItem extra={ `- ¥ ${ coupons.deductionPrice }` }>红包抵扣</ListItem> }
       </List>
     </div>
 )}
@@ -174,4 +173,4 @@ const ActivityItem = ({ activityType, activity, coupons, handleCloseIcon }) => {
 //   />}
 // >默认开</List.Item>
 
-export default createForm()(ActivePopup)
+export default ActivePopup

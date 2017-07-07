@@ -6,7 +6,7 @@ import Loading       from '../loading'
 import AddressSearch from '../address-search'
 import SlidePage     from '../slide-page'
 import Mask          from '../mask'
-
+import './style/contact-form.scss'
 import chooseIcon   from './img/choose.png'
 import nochooseIcon from './img/nochoose.png'
 
@@ -14,11 +14,10 @@ const ListItem = List.Item
 
 // 百度根据城市名获取坐标
 const baiduGetLocation = (cityName, callback) => {
+    console.log('cityName----', cityName)
     var myGeo = new BMap.Geocoder();	//构造函数
     myGeo.getPoint(cityName,function(point){
-
         callback(point)
-
     })
 }
 // 改变逆向城市名称
@@ -26,7 +25,7 @@ const gethasLocation = ( mPoint, callback ) => {
     var myGeo = new BMap.Geocoder();
     myGeo.getLocation(mPoint,
         function mCallback(rs){
-            console.log(rs);
+            console.log('rs-----', rs);// 这里的区参数是district，在2017-6-30 修改，
             let rightCity = rs.addressComponents;
             callback(rightCity)
         }
@@ -40,19 +39,21 @@ class CustomerForm extends Component {
     this.edit = false
     if(editContact && editContact.contactId) {
       this.state = {
-        ...editContact
+        ...editContact,
+        focus: true,
       }
       this.edit = true
     } else {
       this.state = {
         contactId	: '',
-        gender: 0,
-        phone : '',
-        name  : '',
-        detail: '',
-        address: '',
-        tag    : '',
-        isDefault: false
+        gender:      0,
+        phone :      '',
+        name  :      '',
+        detail:      '',
+        address:     '',
+        tag    :     '',
+        isDefault:   false,
+        houseNum:    '',
       }
     }
     // this.provinceArr = []
@@ -72,20 +73,35 @@ class CustomerForm extends Component {
   }
   handleNameChange(name) {
     this.setState({ name })
+  }houseNum
+  handleHouseNumChange(houseNum) {
+    this.setState({ houseNum })
   }
-  handleAddrDetailChange(detail) { console.log('handleAddrDetailChange---=',detail)
+  handleAddrDetailChange(detail) { // console.log('handleAddrDetailChange---=',detail)
     this.setState({ detail })
   }
-  handleAddressChange(location) { console.log('woxiangyaogaibian---=',location)
+  handleAddressChange(location) { // console.log('handleAddressChange---=',location)
     const { point, title, address } = location
-    gethasLocation( location.point , rightCity => {console.log('rightCity',rightCity)
-        this.handleChangeArea(rightCity.province , rightCity.city, rightCity.county , true);
+    console.log('handleAddressChange----gethasLocation---', location, point)
+    gethasLocation( point , rightCity => { console.log('rightCity',rightCity)
+        this.handleChangeArea(rightCity.province , rightCity.city, rightCity.district , true); // rightCity.county 因为没有这个参数了 而被替换为district  所以这里做了修改 2017-7-30
+        const { city, province, district  } = rightCity
+        this.setState({
+          province,
+          city,
+          county: district,
+        })
     })
     this.setState({
         longitude: point.lng,
         latitude : point.lat,
-        address  : title
+        address  : title,
     })
+    const points = {
+      longitude: point.lng,
+      latitude : point.lat,
+    }
+    setStore('goBackPoint',points , 'session'); // 经纬度精确问题 2017-7-06  外卖
     //this.handleToggleAddressSearchShow(false)
     this.handleAddrDetailChange(address)
     // this.setState({ address })
@@ -93,13 +109,18 @@ class CustomerForm extends Component {
 
   handleTagChange(tag) {
     if(tag === '无') tag = ''
+    console.log('this-----', this);
     this.setState({ tag })
   }
+  // handleTagsChange(tag) {
+  //   if(tag === '无') tag = ''
+  //   this.setState({ tag })
+  // }
   handleDefaultChange(isDefault) {
     this.setState({ isDefault })
   }
   handleSaveContact() {
-    const { contactId, gender, phone, name, detail, address, tag, isDefault } = this.state
+    const { contactId, gender, phone, name, detail, address, tag, isDefault, houseNum } = this.state
     const { onSuccess } = this.props
     if(!name) {
       Toast.info('请填写姓名')
@@ -117,14 +138,18 @@ class CustomerForm extends Component {
       Toast.info('请填写详细地址')
       return
     }
+    if(!houseNum) {
+      // Toast.info('请填写门牌号')
+    }
     let postData = {}
-    if(contactId) {
+    if (contactId) {
       postData = clone(this.state)
-  } else {
+    } else {
       postData = merge(this.state, {
-       ...getStore('geopoint', 'session'),
+       ...getStore('goBackPoint', 'session'), // 2017-7-03 修改保存时的经纬度，原本为取用本地的经纬度
        userId: getStore('customerUserId', 'session')
      })
+     console.log('SaveContact-----', getStore('goBackPoint', 'session'))
     }
 
     delete postData.districts
@@ -198,9 +223,9 @@ class CustomerForm extends Component {
     })
   }
   handleChangeArea(province, city, county ,mark) {
-
+    // console.log('handleChangeArea------', province, city, county ,mark);
     const { districts = [] } = this.state
-    console.log(districts);
+    console.log('districts---', districts);
     let provinceObj = districts.filter(d => province === d.label || province === d.value)[0] || {}
     let cityObj
     let countyObj
@@ -214,13 +239,13 @@ class CustomerForm extends Component {
     if(countyObj && !countyObj.value && cityObj.children) {
       countyObj = cityObj.children[0]
     }
-    if(provinceObj && cityObj && countyObj) { console.log(provinceObj.label + cityObj.label  +countyObj.label);
+    if(provinceObj && cityObj && countyObj) {
+        // console.log('provinceObj && cityObj && countyObj----', provinceObj.label + cityObj.label  +countyObj.label);
         baiduGetLocation(`${ provinceObj.label }${cityObj.label}${countyObj.label}`, point => {
-
+            console.log('point--baiduGetLocation', point)
             this.setState({
                 latitude: point ? point.lat : '',
                 longitude: point ? point.lng : '',
-
             })
             if(mark){
                  console.log('我是逆向选择');
@@ -230,9 +255,8 @@ class CustomerForm extends Component {
                     address: ''
                 })
             }
-            setStore('goBackPoint',point , 'session')
+            // setStore('goBackPoint',point , 'session') // 经纬度精确问题 2017-7-06  外卖  搜索回来经纬度不对
         });
-
         this.setState({
           province  : provinceObj.label,
           provinceId: provinceObj.value,
@@ -259,10 +283,10 @@ class CustomerForm extends Component {
   }
   render() {
     const { gender, phone, name, detail, address, tag, isDefault, loading, bAddressSearchShow, longitude, latitude, districts, contatId,
-            province = '', city = '', county = '', provinceId, cityId, countyId } = this.state
+            houseNum, province = '', city = '', county = '', provinceId, cityId, countyId } = this.state
     //console.log(provinceId, cityId, countyId)
     return (
-      <div className='touch-layer hp100'>
+      <div className='touch-layer hp100 contactWrap'>
         <List>
           <ListItem>
             <div className='tcenter black font-x'>{ this.edit ? '编辑' : '新增' }收货地址</div>
@@ -270,18 +294,29 @@ class CustomerForm extends Component {
         </List>
         <WhiteSpace size='lg' />
         <List>
-          <ListItem>
+          <ListItem className = "am-list-name" >
             <span className='wp20 inline-block'>收货人</span>
-            <span><input type='text' placeholder='请填写收货人的姓名' value={ name } onChange={ e => this.handleNameChange(e.target.value) } className='wp80 no-border' /></span>
+            <span>
+              <input type='text' placeholder='请填写收货人的姓名' value={ name }
+                onChange={ e => this.handleNameChange(e.target.value) }
+                className='wp80 no-border'
+              />
+            </span>
           </ListItem>
           <ListItem>
-            <span className='wp20 inline-block'>称呼</span>
-            <label className='tmr' onClick={ () => this.handleGenderChange(0) }><img src={ gender ? nochooseIcon : chooseIcon } style={ iconStyle } /><span className='gray'>先生</span></label>
-            <label className='tmr' onClick={ () => this.handleGenderChange(1) }><img src={ gender ? chooseIcon : nochooseIcon } style={ iconStyle } /><span className='gray'>女士</span></label>
+            <div className='sixLable'>
+              <span className={ `gray ${ gender === 0 ? 'otoOrange' : '' }` } onClick={ () => this.handleGenderChange(0) }>先生</span>
+              <span className={ `gray ${ gender === 1 ? 'otoOrange' : '' }` } onClick={ () => this.handleGenderChange(1) }>女士</span>
+            </div>
           </ListItem>
           <ListItem>
             <span className='wp20 inline-block'>手机号</span>
-            <span><input type='tel' maxLength='11' placeholder='请填写收货人的电话号码' value={ phone } onChange={ e => this.handlePhoneChange(e.target.value) } className='wp80 no-border' /></span>
+            <span>
+              <input type='tel' maxLength='11' placeholder='请填写收货人的电话号码' value={ phone }
+                onChange={ e => this.handlePhoneChange(e.target.value) }
+                className='wp80 no-border'
+              />
+            </span>
           </ListItem>
           <Picker extra={ `${ province } ${ city } ${ county }` }
                   value={[ provinceId, cityId, countyId ]} format={ val => val.join(' ') }
@@ -290,20 +325,37 @@ class CustomerForm extends Component {
           </Picker>
           <ListItem>
             <span className='wp20 inline-block'>配送至</span>
-            <span><input type='text' onClick={ e => { this.handleToggleAddressSearchShow(true); e.target.blur() } } placeholder='请填写小区/写字楼/学校等' value={ address } className='wp80 no-border'
-                         onChange={ e => this.handleAddressChange(e.target.value) } /></span>
+            <span className={ `wp80 no-border addressSpan ${ address ? 'addressSpan0' : '' }` } onClick={ () => { this.handleToggleAddressSearchShow(true) } }>
+              { `${ address ? address : '请填写小区/写字楼/学校等' }` }
+            </span>
           </ListItem>
           <ListItem>
             <span className='wp20 inline-block'></span>
-            <span><input type='text' placeholder='补充详细地址（如门牌号/楼层等）' value={ detail } className='wp80 no-border' onChange={ e => this.handleAddrDetailChange(e.target.value) } /></span>
+            <span>
+              <input type='text' placeholder='补充详细地址（如门牌号/楼层等）' value={ detail }
+                className='wp80 no-border'
+                onChange={ e => this.handleAddrDetailChange(e.target.value) }
+              />
+            </span>
           </ListItem>
-          <Picker extra={ tag ? <span className='tag orange'>{ tag }</span> : '' }
-                  data={ ['无', '家', '公司', '学校'].map(d => { return { value: d, label: d } }) } onChange={ val => this.handleTagChange(val[0]) } cols='1'>
-            <ListItem arrow='horizontal' >标签</ListItem>
-          </Picker>
+          <ListItem>
+            <span className='wp20 inline-block'>门牌号</span>
+            <span>
+              <input type='text' placeholder='例：6号楼205室' value={ houseNum }
+                onChange={ e => this.handleHouseNumChange(e.target.value) }
+                className='wp80 no-border'
+              />
+            </span>
+          </ListItem>
+          <ListItem className='tagList' extra={
+
+                ['家', '公司', '学校'].map((d, i) => (
+                  <span className={ `tag ototab ${ tag && tag === d ? 'otoOrange' : '' }` } key={ i } onClick={ () => this.handleTagChange(d) }>{ d }</span>
+                ))
+          } arrow='empty' >标签</ListItem>
         </List>
         <WhiteSpace size='lg' />
-        <List>
+        <List style={{ display: 'none' }}>
           <ListItem extra={ <Switch checked={ !!isDefault } onChange={ checked => this.handleDefaultChange(checked) } /> }>
             是否设为默认地址
           </ListItem>
@@ -319,5 +371,18 @@ class CustomerForm extends Component {
 const iconStyle = {
   height: '.36rem', width: '.36rem', margin: '-.06rem .06rem 0 0'
 }
-
+// 标签组件
+const LabelComponent = ({ handleTagChange, tag }) => {
+  const data = ['家', '公司', '学校']
+  // .map(d => { return { value: d, label: d } }) } onChange={ val => this.handleTagChange(val[0]) } cols='1'>
+  return (
+    <div>
+      {
+        data.map((d, i) => (
+          <span className={ `tag ototab${ tag && tag === d ? 'otoOrange' : '' }` } key={ i } onClick={ handleTagChange(d) }>{ d }</span>
+        ))
+      }
+    </div>
+  )
+}
 export default CustomerForm

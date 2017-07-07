@@ -28,7 +28,7 @@ class Empty extends Component {
     // let reg = new RegExp(/\./g)
 
     return (
-      <div className='empty-container'>
+      <div className='empty-container' style={ this.props.style }>
         <div className='empty-content' ref='content'>
           {
             imgUrl.constructor == String

@@ -3,15 +3,18 @@
 .loading-container {
   @extend %pos-fixed;
   @include radius(24px);
-  @include wh(128px, 128px);
+  // @include wh(128px);
   @include box((top: 50%, left: 50%));
   @include bgc(#444546);
   @include margin(-128px 0 0 -64px);
   @include z(99);
+  min-width: 128px;
+  height: 128px;
+  opacity: .6;
   img {
     @extend %pos-absolute;
-    @include wh(40px, 40px);
+    @include wh(50px, 50px);
     @include box((top: 50%, left: 50%));
-    @include margin(-20px, top left)
+    @include margin(-25px, top left)
   }
 }

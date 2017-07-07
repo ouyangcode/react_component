@@ -12,17 +12,21 @@ import ListviewDemo from './d/listview'
 import { ContactShowDemo } from './d/contact-show'
 import { MyCalendarDemo } from './d/calendar'
 import NewPromotionDemo from './d/new-promotion-demo.js'
-import { TouristDemo } from './d/Tourist.js'
-import { AddTouristDemo } from './d/addTourist.js'
+import { TouristDemo } from './d/tourist.js'
+import { AddTouristDemo } from './d/addtourist.js'
 import ActivePopupDemo from './d/activity-popup'
 import { EvaluationDemo } from './d/evaluation'
 import FocusDemo from './d/focusWrap'
-import { PichandleDemo } from './d/picHandle'
-import { BmapshowDemo } from './d/Bmapshow'
-import { CardShowDemo } from './d/Cardshow'
+import { PicHandleDemo } from './d/pic-handle'
+import { MapShowDemo } from './d/map-show'
+import { CardShowDemo } from './d/card-show'
+import PayTipsDemo from './d/pay-tips'
+import { NoticeBarBLM } from '@boluome/oto_saas_web_app_component'
 
 const Service = () => (
-  <div style={{ padding: '16px 0' }}>
+  <div style={{ padding: '16px 0', boxSizing: 'border-box' }}>
+    <NoticeBarBLM text='如果不传text，默认显示：服务商维护如遇无法充值，请稍后再试' />
+
     <List renderHeader={ () => '地址搜索' }>
       <AddressSearchDemo />
     </List>
@@ -44,9 +48,6 @@ const Service = () => (
     </List>
     <WhiteSpace size='lg' />
     <NewPromotionDemo />
-
-    <WhiteSpace sie='lg' />
-    <PromotionDemo />
 
     <WhiteSpace size='lg' />
     <ActivePopupDemo />
@@ -77,13 +78,16 @@ const Service = () => (
     <FocusDemo />
 
     <WhiteSpace size='lg' />
-    <PichandleDemo />
+    <PicHandleDemo />
 
     <WhiteSpace size='lg' />
-    <BmapshowDemo />
+    <MapShowDemo />
 
     <WhiteSpace size='lg' />
     <CardShowDemo />
+
+    <WhiteSpace size='lg' />
+    <PayTipsDemo />
   </div>
 )
 

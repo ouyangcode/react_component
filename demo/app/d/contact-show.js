@@ -39,5 +39,6 @@ const markcontact = {
      province: '上海市',
      provinceId: '310000',
      tag: '公司',
-     userId: 'blm_test'
+     userId: 'blm_test',
+     houseNum: 'A座2091'
 }

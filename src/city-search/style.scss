@@ -63,8 +63,7 @@ html {
 $grey777: rgb(170,170,170);
 $grey333: rgb(136,136,136);
 $black666: rgb(69,69,69);
-$yellow570: rgb(255,170,0);
-$yellow550: rgb(255,154,0);
+$yellow570: #ffab00;
 
 @mixin s_middle {
     position: absolute;
@@ -106,136 +105,130 @@ $yellow550: rgb(255,154,0);
 
 
 .citySearch {
+  background: #f9f9f9;
+  height: calc(100% - 1.5rem);
+  overflow: auto;
+  transition: 3s;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  .header{
     background: #f9f9f9;
-    height: 100%;
-    overflow: hidden;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
+    padding: 0.23rem 0;
+    padding-left: 0.25rem;
+
+    .input {
+      background: #fff;
+      border-radius: 4px;
+      height: 0.56rem;
+      position: relative;
+      padding-left: .76rem;
+      font-size: 0.30rem;
+      .searchIcon {
+        @include s_middle;
+        color: $grey777;
+      }
+
+      input {
+        padding-left: .52rem;
+        width: 80%;
+        font-size: 0.28rem;
+        line-height: 0.56rem;
+        height: 56px;
+      }
+    }
+  }
+
+  .cityLeft {
+    overflow-y: auto;
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
     position: relative;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
-    .header{
+    padding: 0 .7rem 0 .25rem;
+    -webkit-overflow-scrolling: touch;
+
+    .local-city{
       background: #f9f9f9;
-      padding: 0.23rem 0;
-      padding-left: 0.25rem;
-
-      .input {
+      span{
+        @include s_fontDemo($grey333, .24rem, .24rem);
+        display: block;
+        margin-bottom: .4rem;
+        margin-top: .18rem;
+      }
+      p{
+        width: 2.1rem;
+        height: 0.72rem;
+        line-height: 0.72rem;
+        text-align: center;
         background: #fff;
-        border-radius: 4px;
-        height: 0.56rem;
-        position: relative;
-        padding-left: .76rem;
-        font-size: 0.30rem;
-        .searchIcon {
-            @include s_middle;
-            color: $grey777;
-        }
+        margin-bottom: .4rem;
+      }
+    }
+    .cityContainer {
+      background: #f9f9f9;
+      .cityKey {
+        @include s_fontDemo($grey333, .24rem, .24rem);
+        margin-bottom: .4rem;
+      }
+    }
 
-        input {
-            padding-left: .52rem;
-            width: 80%;
-            font-size: 0.28rem;
-            line-height: 0.56rem;
-            height: 56px;
+    .cityContainer {
+      ul {
+        list-style: none;
+        overflow: hidden;
+        li {
+          width: 32%;
+          height: 0.72rem;
+          line-height: 0.72rem;
+          text-align: center;
+          float: left;
+          background: #fff;
+          margin-right: 2%;
+          margin-bottom: 0.12rem;
         }
       }
     }
 
-    .cityLeft {
-        overflow-y: auto;
-        -webkit-box-flex: 1;
-            -ms-flex: 1;
-                flex: 1;
-        position: relative;
-        padding: 0 .7rem 0 .25rem;
-        -webkit-overflow-scrolling: touch;
-
-        .local-city{
-          background: #f9f9f9;
-          span{
-            @include s_fontDemo($grey333, .24rem, .24rem);
-            display: block;
-            margin-bottom: .4rem;
-            margin-top: .18rem;
-          }
-          p{
-            width: 2.1rem;
-            height: 0.72rem;
-            line-height: 0.72rem;
-            text-align: center;
-            background: #fff;
-            margin-bottom: .4rem;
-          }
+    .cityList {/*城市列表*/
+      background: #f9f9f9;
+      padding-bottom: 1rem;
+      .cityContainer {
+        .cityKey {
+          clear: both;
+          height: 0.32rem;
+          width: 0.32rem;
+          background: $yellow570;
+          text-align: center;
+          line-height: 0.32rem;
+          font-size: 0.22rem;
+          color: #fff;
+          border-radius: 0.32rem;
+          margin-bottom: .4rem;
+          margin-top: 0.23rem;
         }
-
-
-        .cityContainer {
-          background: #f9f9f9;
-
-            .cityKey {
-                @include s_fontDemo($grey333, .24rem, .24rem);
-                margin-bottom: .4rem;
-            }
-        }
-
-        .cityContainer {
-          ul {
-              list-style: none;
-              overflow: hidden;
-              li {
-                  width: 32%;
-                  height: 0.72rem;
-                  line-height: 0.72rem;
-                  text-align: center;
-                  float: left;
-                  background: #fff;
-                  margin-right: 2%;
-                  margin-bottom: 0.12rem;
-              }
-          }
-        }
-
-        .cityList {/*城市列表*/
-          background: #f9f9f9;
-
-          .cityContainer {
-
-              .cityKey {
-                  clear: both;
-                  height: 0.32rem;
-                  width: 0.32rem;
-                  background: $yellow570;
-                  text-align: center;
-                  line-height: 0.32rem;
-                  font-size: 0.22rem;
-                  color: #fff;
-                  border-radius: 0.32rem;
-                  margin-bottom: .4rem;
-                  margin-top: 0.23rem;
-              }
-
-
-          }
-        }
+      }
     }
+  }
 
-    .cityIndex {
-        @include s_middle;
-        width: 0.49rem;
-        right: 0.08rem;
-        z-index: 1;
-
-        li {
-            a {
-                display: block;
-                text-align: center;
-                @include s_fontDemo( $yellow550, .2rem, .35rem )
-            }
-        }
+  .cityIndex {
+    @include s_middle;
+    width: 0.49rem;
+    right: 0.08rem;
+    z-index: 1;
+    li {
+      span {
+        display: block;
+        text-align: center;
+        @include s_fontDemo( $yellow570, .2rem, .35rem )
+      }
     }
-
+  }
 }
-.searchBar .cancel{font-size: 0.28rem; color: #ffa000; display: inline-block; width: 100%; text-align: center;}
+
+.searchBar .cancel{ font-size: 0.28rem; color: #ffab00; display: inline-block; width: 100%; text-align: center; }

@@ -6,9 +6,13 @@
   @include box();
   @include z(9);
   @include transition($dur: .3s);
+  overflow: hidden;
   .close-container {
+    @extend %pos-absolute;
+    @include box((right: 0, top: 0));
     .slide-page-close {
-      @extend %pos-absolute;
+      @extend %pos-relative;
+      @extend %block;
       @include box((right: 14px, top: 12px));
       @include z(9);
       @include rotate();

@@ -1,12 +1,18 @@
-import './style/index.scss'
 import React, { Component } from 'react'
 import { Icon } from 'antd-mobile'
 import { getStore, stringifyQuery } from '@boluome/common-lib'
 import { merge, compose, ifElse, always, equals, type, length, both, gt, __ } from 'ramda'
+import './style/index.scss'
+
 class Center extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    const { OTO_SAAS = {} } = window
+    const { customer = {} } = OTO_SAAS
+    const { showUserCenter = false } = customer
+    this.state = {
+      showUserCenter
+    }
   }
   //当点击时
   handleClick() {
@@ -70,8 +76,9 @@ class Center extends Component {
     return document.defaultView.getComputedStyle(o)
   }
   render() {
+    const { showUserCenter } = this.state
     return  (
-      <div ref='userCenter' className='user-center'
+      <div ref='userCenter' className='user-center' style={ showUserCenter ? {} : { display: 'none' }}
            onTouchMove  = { this.handleMove.bind(this)  }
            onTouchStart = { this.handleStart.bind(this) }
            onTouchEnd   = { this.handleEnd.bind(this)   }

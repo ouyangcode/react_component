@@ -3,7 +3,7 @@ import './style/index.scss'
 
 
 import React, { Component } from 'react';
-import { get, send } from '@boluome/common-lib'
+import { get, send, setStore, getStore } from '@boluome/common-lib'
 import { moment, addInterval } from '@boluome/common-lib'
 import { compose, ifElse, __, always, gte } from 'ramda'
 // import { Calendar } from 'react-date-range';
@@ -25,16 +25,7 @@ class MyCalendar extends Component {
 	constructor(props){
 
 		super(props)
-		let { pricearr } = props;
-		// if(pricearr && pricearr.length > 0){
-		// 		this.state = {
-		// 			...pricearr
-		// 		}
-		// }else{alert('err')
-		// 	this.state = {
-		// 		pricearr : []
-		// 	}
-		// }
+		let { pricearr, CustomClick, DefaultnoUse } = props;
 		const year  = moment('YYYY')();
 		const month = parseInt(moment('MM')());
 		const getDate = compose(moment('date'), addInterval(-1, 'd'), moment('x'))
@@ -54,8 +45,8 @@ class MyCalendar extends Component {
 		const month1 = year + '年' + zero( month ) + '月';
 		const month2 = year + '年' + zero( month + 1 ) + '月';
 		const month3 = year + '年' + zero( month + 2 ) + '月';
-		const mon2 = parseInt( month + 1 );console.log(mon2);
-		const mon3 = parseInt( month + 2 );console.log(mon3);
+		const mon2 = parseInt( month + 1 ); // console.log(mon2);
+		const mon3 = parseInt( month + 2 ); // console.log(mon3);
 		//三个月的第一天是周几
 		const d1 = moment('day')(`${ year }${ month }`)
 		const d2 = moment('day')(`${ year }${ month +1 }`)
@@ -65,20 +56,29 @@ class MyCalendar extends Component {
 		obj1.days = this.getMonthDays(days1);obj1.title = month1;obj1.firstweek = this.getMonthFirstDays(d1);obj1.adddata = this.GetnongDate(year,month,days1);obj1.month = month
 		obj2.days = this.getMonthDays(days2);obj2.title = month2;obj2.firstweek = this.getMonthFirstDays(d2);obj2.adddata = this.GetnongDate(year,mon2,days2);obj2.month = mon2
 		obj3.days = this.getMonthDays(days3);obj3.title = month3;obj3.firstweek = this.getMonthFirstDays(d3);obj3.adddata = this.GetnongDate(year,mon3,days3);obj3.month = mon3
-		console.log(obj1);
+		// console.log(obj1);
 		if(pricearr && pricearr.length > 0){
 				this.state = {
 					pricearr,
-					dateList: [obj1,obj2,obj3]
+					dateList: [obj1,obj2,obj3],
+					CustomClick,
+					endTimeClick: 'start',
+					startTimeClick: 'start',
+					DefaultnoUse
 				}
 		}else{
 			this.state = {
 				pricearr : [],
-				dateList: [obj1,obj2,obj3]
+				dateList: [obj1,obj2,obj3],
+				CustomClick,
+				endTimeClick: 'statr',
+				startTimeClick: 'start',
+				DefaultnoUse: 'use'
 			}
 		}
 		this.GetnongDate = this.GetnongDate.bind(this)
 		this.handleClickfn = this.handleClickfn.bind(this)
+		this.handleCustomClick = this.handleCustomClick.bind(this)
 	}
 	componentWillMount(){
 		// alert('new')
@@ -99,12 +99,12 @@ class MyCalendar extends Component {
 	}
 	GetnongDate(year,mon,days){
 		let cnarr = []
-		for(let g = 1 ;g <= days ; g++){console.log('ssss');
+		for(let g = 1 ;g <= days ; g++){
 			let obj = {},cn = this.GetLunarDay(year,mon,g).substring(this.GetLunarDay(year,mon,g).length-2,this.GetLunarDay(year,mon,g).length)
 			obj.cn = cn;obj.day = g;obj.price = '';obj.fes = '';obj.mons = g < 10 ? (g = '0' +g) : (g);
 			cnarr.push(obj);
 		}
-		console.log(cnarr);
+		// console.log(cnarr);
 
 		return cnarr
 	}
@@ -199,8 +199,6 @@ class MyCalendar extends Component {
 	        return this.GetcDateString();
 	    }
 	}
-
-
 	GetCNDate() {
 	    return this.GetLunarDay(yy, mm, dd);
 	}
@@ -212,7 +210,7 @@ class MyCalendar extends Component {
 		return m;
 	}
     //获取本月第一天的星期数
-    getMonthFirstDays(d){console.log(d);
+    getMonthFirstDays(d){ // console.log(d);
 	   let m = [];
 	   for(let k =0 ; k< d ; k++){
 		   m.push(k)
@@ -236,7 +234,7 @@ class MyCalendar extends Component {
 				for(let y = 0 ; y < pricearr.length ; y++){
 					const pricearrSplit1 = (pricearr[y].date).split('-')[1];
 					const pricearrSplit2 = (pricearr[y].date).split('-')[2];
-					if(pricearrSplit1 == titles){console.log('pricearrSplit======',pricearrSplit1,'======',titles);
+					if(pricearrSplit1 == titles){ // console.log('pricearrSplit======',pricearrSplit1,'======',titles);
 						for(let s = 0; s < addItem.length ; s++){
 							let addItemSplit = (addItem[s].day <10 ? ('0'+addItem[s].day) : (addItem[s].day))
 							if(addItemSplit == pricearrSplit2){
@@ -256,11 +254,41 @@ class MyCalendar extends Component {
 		const { onChange } = this.props
 		const res = { price ,date ,datestr }
 		onChange(res)
-		console.log('wobeifjisdjfi')
+		console.log('wobeifjisdjfi', res)
+	}
+	// 当多选的时候或者其他情况的时候
+	handleCustomClick(month, item) {
+		console.log('item----', month, item)
+		const { CustomClick, startTimeClick, endTimeClick } = this.state
+		if (CustomClick === 'true') {
+			let starTime = {}, endTime = {}
+			if (startTimeClick === 'start') {
+				starTime = {
+					month,
+					startDay: item
+				}
+				this.setState({
+					startTimeClick: 'end'
+				})
+				console.log('starTime---', starTime);
+			} else if (startTimeClick === 'end') {
+				endTime = {
+					month,
+					startDay: item
+				}
+				this.setState({
+					startTimeClick: 'start'
+				})
+				console.log('endTime---', endTime);
+			}
+
+
+		}
+
+		// setStore('starTime', starTime, 'session')
 	}
 	render(){
-		const { dateList ,pricearr , handlePriceData } = this.state
-		console.log('dateList,',dateList,'------',pricearr);
+		const { dateList ,pricearr , handlePriceData, CustomClick, DefaultnoUse } = this.state
 		this.handlePriceData(dateList,pricearr);
 
 		const Weekday = ['日' , '一', '二', '三', '四', '五' , '六']
@@ -273,7 +301,7 @@ class MyCalendar extends Component {
 				</div>
 				<div className = "calendarMain">
 					<div className = "calendar">
-						<Calendar dateList={ dateList } handleClickfn = { this.handleClickfn }/>
+						<Calendar dateList={ dateList } handleClickfn = { this.handleClickfn } CustomClick={ CustomClick } handleCustomClick={ this.handleCustomClick } DefaultnoUse={ DefaultnoUse } />
 					</div>
 				</div>
 			</div>
@@ -283,19 +311,9 @@ class MyCalendar extends Component {
 export default MyCalendar
 
 
-const Calendar = ({ dateList ,handleClickfn }) => {
-	console.log('dateList', dateList);
+const Calendar = ({ dateList ,handleClickfn, CustomClick, handleCustomClick, DefaultnoUse }) => {
 	console.log('当前时间', yy , mm , dd);
-	// let monthShow = 0
-	// for(let i = 0; i < dateList.length; i++){ console.log('title',dateList[i].title);
-	// 	const year = dateList[i].title.split('年')[0]
-	// 	const mon = dateList[i].month
-	// 	if(year == yy && mon <= mm){
-	// 		monthShow = 1
-	// 	}
-	// }
-  const fetday = [{ m:5, d:1, f:'劳动节' },{ m: 6, d:1, f:'儿童节' },{ m:7, d:1, f:'建军节' },{ m:8, d:1, f:'建党节' },{ m:10, d:1, f:'国庆节' }]
-	let fetShow = 0;
+	console.log('addCalendar itemspan---', DefaultnoUse);
 	return(
 		<div>
 			{
@@ -315,11 +333,11 @@ const Calendar = ({ dateList ,handleClickfn }) => {
 							}
 							{
 								(item.adddata).map((items2, index) => (
-									<li className = "itemList" key={ `key${index}` } onClick = {() => { items2.price ? ( handleClickfn( items2.price , items2.date ,items2.datestr ) ) :('')} }>
-										<span className={ `${ item.month == mm && items2.day < dd ? 'itemspan' : '' }` }>
+									<li className = "itemList" key={ `key${index}` } onClick = {() => { items2.price ? ( handleClickfn( items2.price , items2.date ,items2.datestr ) ) :('') ; { CustomClick === 'true' ? handleCustomClick(item.month, items2) : '' } } }>
+										<span className={ `${ items2.price ? '': (DefaultnoUse === 'nouse' ? 'itemspan' : (item.month == mm && items2.day < dd ? 'itemspan' : '')) }` }>
 											{ items2.day }
 										</span>
-										<Addcalendar addData = { items2.price? '￥'+items2.price : items2.cn } calendarName = { items2.price ? 'priceCalendar' : (item.month == mm && items2.day < dd ? 'addCalendar itemspan' : 'addCalendar')} />
+										<Addcalendar addData = { items2.price ? '￥'+items2.price : items2.cn } calendarName = { items2.price ? 'priceCalendar' : (DefaultnoUse === 'nouse' ? 'addCalendar itemspan' : (item.month == mm && items2.day < dd ? 'addCalendar itemspan' : 'addCalendar'))} />
 									</li>
 								))
 							}
@@ -335,7 +353,6 @@ const Calendar = ({ dateList ,handleClickfn }) => {
 
 
 const Addcalendar = ({ addData, calendarName, onClickfn}) => {
-
 	return(
 		<div>
 			<span className = { calendarName } >{ addData }</span>

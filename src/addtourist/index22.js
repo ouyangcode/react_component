@@ -25,9 +25,8 @@ class AddTourist extends React.Component{
     } else {
       this.state = {
         id	      : '',
-        type      : 0,
-        bornDate  : '',
-        cardType  : '',
+        type      : 1,
+        cardType  : '身份证',
         name      : '',
         phone     : '',
         idCard    : '',
@@ -36,23 +35,39 @@ class AddTourist extends React.Component{
         isDefault : false
       }
     }
+    this.handleToggleContactForm = this.handleToggleContactForm.bind(this)
+    this.handleTypeChange = this.handleTypeChange.bind(this)
+    this.handlePhoneChange = this.handlePhoneChange.bind(this)
+    this.handleNameChange = this.handleNameChange.bind(this)
+    this.handleIdCardChange = this.handleIdCardChange.bind(this)
+    this.handleSaveTourist = this.handleSaveTourist.bind(this)
+    this.handBornDateChange = this.handBornDateChange.bind(this)
+    this.handleSuccess = this.handleSuccess.bind(this)
   }
   handleToggleContactForm(bContactFormShow) {
     this.setState({ bContactFormShow })
   }
-  handleTypeChange(type) {
-    this.setState({ type })
+  handleTypeChange(typeText) {
+    if(typeText == 1){
+         this.setState({ type : 1 })
+    }else if(typeText == 2){
+         this.setState({ type : 2 })
+    }else if(typeText == 3){
+         this.setState({ type : 3 })
+    }
   }
   handlePhoneChange(phone) {
     this.setState({ phone })
   }
   handleNameChange(name) {
     this.setState({ name })
+    // console.log('name', name);
   }
   handBornDateChange(bornDate){
-     this.setState({ bornDate })
+     let bornDates = moment(bornDate ).format('YYYY-MM-DD');
+     this.setState({ bornDate : bornDates})
   }
-  handleIdCardChange(idCard) { console.log('handleidCardChange---=',idCard)
+  handleIdCardChange(idCard) {
       let birthday = "";
         if(idCard != null && idCard != ""){
             if(idCard.length == 15){
@@ -64,10 +79,9 @@ class AddTourist extends React.Component{
             birthday = birthday.replace(/(.{4})(.{2})/,"$1-$2-");
         }
 
-        // return birthday;
-        console.log('birthday---',birthday);
+    setStore('birthday',birthday,'session')
     this.setState({ idCard })
-    this.handBornDateChange( birthday )
+    this.setState({ bornDate : birthday });
   }
   handleSaveTourist() {
       const { id, type, phone, name, bornDate , cardType, idCard, status, identityId , isDefault } = this.state
@@ -76,6 +90,7 @@ class AddTourist extends React.Component{
         Toast.info('请填写姓名')
         return
       }
+      // console.log('phone', phone);
       if(!(/^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(17[0-9]{1}))+\d{8})$/.test(phone))) {
         Toast.info('请填写正确手机')
         return
@@ -91,6 +106,11 @@ class AddTourist extends React.Component{
       if(!bornDate) {
         Toast.info('请填选择出生日期')
         return
+      }
+      let birthday = getStore('birthday' ,'session');// console.log('bornDate----',bornDate,'birthday----',birthday);
+      if(bornDate != birthday){
+          Toast.info('证件号码错误')
+          return
       }
       let postData = {}
       if(id) {
@@ -121,13 +141,15 @@ class AddTourist extends React.Component{
     onSuccess()
     handleContainerClose()
   }
+  // componentWillUnmount() {
+  //   SlidePage.closeAll()
+  // }
   componentDidMount() {
       // const { geoPoint } = this.state
       // this.handleDatefn()
   }
   render(){
       const seasons = [
-          [
             {
               label: '身份证',
               value: '身份证',
@@ -136,54 +158,72 @@ class AddTourist extends React.Component{
               label: '护照',
               value: '护照',
             },
-          ]
-        ];
-        const maxDate = moment('2016-12-03 +0800', 'YYYY-MM-DD Z').utcOffset(8);
-        const minDate = moment('2015-08-06 +0800', 'YYYY-MM-DD Z').utcOffset(8);
 
+        ];
+        const date1= new Date();
+        const maxDate = moment(date1, 'YYYY-MM-DD');
+        const minDate = moment('1900-01-01', 'YYYY-MM-DD');
+        // console.log('seasons',seasons);
         // 如果是修改常用旅客信息
         const { id, type, phone, name, bornDate , cardType, idCard, status, identityId , isDefault } = this.state
+        // const { editContact={} } = this.props
+        // const {  id='', type='', phone='', name='',  cardType='', idCard='', status='', identityId='' , isDefault=''  } = editContact
+        // const { bornDate } = this.state
+        // console.log('bornDate1111111',bornDate);
       return (
         <div className = "addtouristWrap">
            <div className = "addtouristMain">
+             <List>
+               <Item>
+                 <div className='tcenter black font-x'>{ this.edit ? '编辑' : '新增' }常用旅客</div>
+               </Item>
+             </List>
+             <WhiteSpace size='lg' />
               <List>
                   <Item>
                       <span className = "addtitle">类型</span>
-                      <span className = "add_oto">成人</span>
-                      <span className = "add_oto">儿童</span>
-                      <span className = "add_oto">婴儿</span>
+                      <span className = { type == 1 ? 'add_oto oto_span' :'add_oto ' } onClick = { () => { this.handleTypeChange(1) }} >成人</span>
+                      <span className = { type == 2 ? 'add_oto oto_span' :'add_oto ' } onClick = { () => { this.handleTypeChange(2) }}>儿童</span>
+                      <span className = { type == 3 ? 'add_oto oto_span' :'add_oto ' } onClick = { () => { this.handleTypeChange(3) }}>婴儿</span>
                   </Item>
-                  <Item>
-                      <span className='wp30 inline-block'>姓名</span>
-                      <span><input type='text' placeholder='请输入姓名' value={ name } onChange={ e => this.handleNameChange(e.target.value) } className='wp70 no-border' /></span>
-                  </Item>
-                  <Item>
-                      <span className='wp30 inline-block'>手机号</span>
-                      <span><input type='tel' maxLength='11' placeholder='请输入手机号' value={ phone } onChange={ e => this.handlePhoneChange(e.target.value) } className='wp70 no-border' /></span>
-                  </Item>
+                  <InputItem className = "oto_int"
+                    type="text"
+                    placeholder="请输入姓名"
+                    defaultValue={ name }
+                    onChange={ this.handleNameChange }
+                  >姓名</InputItem>
+                  <InputItem className = "oto_int"
+                    type="number"
+                    placeholder="请输入手机号"
+                    defaultValue={ phone }
+                    onChange={ this.handlePhoneChange }
+                    maxLength='11'
+                  >手机号码</InputItem>
                   <Picker
                     data={seasons}
                     title="证件类型"
-                    extra={ cardType ? cardType :'身份证' }
-                    cols = '1'
+                    extra={ cardType ? cardType : '身份证' }
+                    cols='1'
                     value={this.state.dpValue}
                     onChange={v => this.setState({ dpValue: v })}
                   >
                   <Item className = "card" arrow="horizontal">证件类型</Item>
                   </Picker>
-                  <Item>
-                      <span className='wp30 inline-block'>证件号码</span>
-                      <span><input type='number' maxLength='19' placeholder='请输入证件号码' value={ idCard } onChange={ e => this.handleIdCardChange(e.target.value) } className='wp70 no-border' /></span>
-                  </Item>
+                  <InputItem className = "oto_int"
+                    type="text"
+                    placeholder="请输入证件号码"
+                    defaultValue={ idCard }
+                    onChange={ this.handleIdCardChange }
+                    maxLength='18'
+                  >证件号码</InputItem>
                   <DatePicker
-                    mode="date"
-                    title="出生年月"
-                    extra={ bornDate ? bornDate :'1990-01-01' }
-                    value={this.state.dpValue}
-                    format={(values) => { return values.join(',')}}
-                    minDate={minDate}
-                    maxDate={maxDate}
-                    onChange={v => this.handBornDateChange( v )}
+                  mode="date"
+                  title="出生年月"
+                  format={ val => val.format('YYYY-MM-DD') }
+                  value={ moment(bornDate ? bornDate : minDate) }
+                  onChange={ v =>  this.handBornDateChange( v ) }
+                  maxDate = {maxDate}
+                  minDate = {minDate}
                   >
                     <List.Item arrow="horizontal" className = "born">出生年月</List.Item>
                   </DatePicker>
@@ -194,5 +234,6 @@ class AddTourist extends React.Component{
       )
   }
 }
+
 
 export default AddTourist

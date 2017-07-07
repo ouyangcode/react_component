@@ -39,7 +39,7 @@ const Mycom = () => {
 }
 
 const Cancel = ( props ) => {
-  console.log('props-----', props);
+  // console.log('props-----', props);
   const { handleContainerClose } = props
   return (
     <span className='cancel' onClick={ () =>  handleContainerClose()  }>取消</span>

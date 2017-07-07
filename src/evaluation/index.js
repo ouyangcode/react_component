@@ -16,15 +16,13 @@ class Evaluation extends Component {
     super(props)
     this.state = {
       count: 5,
-      defaultValue: this.props.defaultValue,
       width:this.props.width
     }
   }
 
-  componentWillMount(props) {}
-
   render() {
-    const { count, defaultValue, width } = this.state
+    const { count, width } = this.state
+    const { defaultValue } = this.props
     let grayArr = []
     let yellArr = []
     for (let i = 0; i < count; i++){

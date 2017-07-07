@@ -21,6 +21,7 @@ export default class Listview extends Component {
     limit : PropTypes.number,//单次限量
     offset: PropTypes.number,//初始页乘以单词限量
     onFetch: PropTypes.func,//增量函数
+    onScroll: PropTypes.func,//滚动函数
     fetchData: PropTypes.object,//增量函数可能需要的其他参数
     //firstLoadingComponent: PropTypes.node, // 首次加载中显示的组件
     loadingComponent: PropTypes.node, // 加载中显示的组件
@@ -43,8 +44,10 @@ export default class Listview extends Component {
       dataList: [],               // 数据列表
       animate:"",
       overflow:'auto',
-      hideHeight:0
+      hideHeight:0,
+      autoPull:true,
     };
+    this.bounary = 0
   }
 
 
@@ -92,16 +95,17 @@ export default class Listview extends Component {
           setTimeout(()=>this.setState({
             pullY:0,
             hideHeight: 0,
-            animate:'all 0.2s ease-in 0s',
+            animate:'all 0.2s ease-in',
             canPull:false
           }),600);
       }else{
           this.setState({
             status: 3,
+            autoPull:false,
           });
           setTimeout(()=>this.setState({
             pullY:0,
-            animate:'all 0.2s ease-in 0s',
+            animate:'all 0.2s ease-in',
             canPull:true
           }),600);
       }
@@ -110,18 +114,27 @@ export default class Listview extends Component {
 
   }
 
-  handleScroll(o) {
-
-    let { status, canPull } = this.state;
+  handleScroll(e) {
+    const { onScroll } = this.props
+    onScroll && onScroll(e)
+    let { status, canPull, autoPull } = this.state;
     let { toBottom, onFetch, limit, offset } = this.props;
-    const { scrollTop, offsetHeight, scrollHeight } = o
+    const { scrollTop, offsetHeight, scrollHeight } = e.target
     // 当距离底部toBottom距离，触发onScrollToBottom
-    if (((scrollTop + offsetHeight) == scrollHeight) && (status == 1 || status == 0)) {
+    if (((scrollTop + offsetHeight + this.bounary) >= scrollHeight) && (status == 1 || status == 0)) {
         this.setState({
           canPull : true
         });
-    }
-    else if(canPull){
+        if (autoPull) {
+          this.setState({
+            overflow:'auto',
+            pullY:toBottom*(-1),
+            animate:'',
+            canPull:false
+          });
+          this.handleFetch(2)
+        }
+    } else if(canPull){
         this.setState({
           canPull : false
         });
@@ -130,6 +143,12 @@ export default class Listview extends Component {
 
   handleTouchStar(e){
     let { canPull, animate } = this.state;
+    const { scrollTop, scrollHeight, offsetHeight } = e.target
+    if (scrollHeight - (scrollTop + offsetHeight) > 50) {
+      this.bounary = 50
+    } else {
+      this.bounary = 0
+    }
     this.setState({
       animate:'',
       status: 1,
@@ -178,7 +197,7 @@ export default class Listview extends Component {
         this.setState({
           overflow:'auto',
           pullY:0,
-          animate:'all 0.2s ease-in 0s'
+          animate:'all 0.2s ease-in'
         });
       }
     }
@@ -193,16 +212,21 @@ export default class Listview extends Component {
       this.setState({ dataList: [] }, () => {
         this.handleFetch(0, handleClose)
       })
+      this.setState({ offset,
+                      fetchData ,
+                      status  : 0,
+                      pullY   : 0,
+                      canPull : false,
+                      noOne   : false,
+                      animate:"",
+                      overflow:'auto',
+                      hideHeight:0,
+                      autoPull:true,
+                    })
     }
     this.setState({ offset,
                     fetchData ,
-                    status  : 0,
-                    pullY   : 0,
-                    canPull : false,
-                    noOne   : false,
-                    animate:"",
                     overflow:'auto',
-                    hideHeight:0
                   })
   }
 
@@ -223,7 +247,7 @@ export default class Listview extends Component {
               overflowX: 'hidden',
               WebkitOverflowScrolling: 'touch',
              }}
-            onScroll  =  { e => this.handleScroll(e.target) }
+            onScroll  =  { e => this.handleScroll(e) }
             onTouchStart={ e => this.handleTouchStar(e) }
             onTouchMove={ e => this.handleTouchMove(e) }
             onTouchEnd = { e => this.handleTouchEnd(e) }

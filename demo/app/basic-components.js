@@ -6,7 +6,7 @@ import { List } from 'antd-mobile'
 const Item = List.Item
 
 const Basic = () => (
-  <div style={{ padding: '16px 0' }}>
+  <div style={{ padding: '16px 0', boxSizing: 'border-box' }}>
     <List renderHeader={ () => 'Mask' }>
       <ModalMask />
       <ModalMaskWithoutMask />

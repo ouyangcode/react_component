@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { List, Popup, Icon } from 'antd-mobile'
 import NewCoupon from '../new-coupon'
 import gou from './img/gou.png'
-import noCoupon from "./img/noCoupon.png"
 import "./style/couponSelection.scss"
 
 const ListItem = List.Item

@@ -10,10 +10,9 @@ export const AddressSearchDemo = () => {
 
   const handleSuccess = local => {
     const { point } = local
-    console.log(local)
     setStore('geopoint', { longitude: point.lng, latitude: point.lat  }, 'session')
   }
-
+  // setTimeout(Mask.closeAll, 1000)
   return (
     <Item arrow='horizontal' onClick={ () =>
         Mask(
